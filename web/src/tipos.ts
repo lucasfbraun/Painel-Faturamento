@@ -1,0 +1,87 @@
+/** Espelho dos tipos do back-end — o contrato de /api/dados. */
+
+export enum Situacao {
+  Digitado = 0,
+  Listado = 1,
+  Liberado = 2,
+  SelecionadoParcial = 3,
+  SelecionadoTotal = 4,
+  FaturadoParcial = 5,
+  FaturadoTotal = 6,
+  Transmitido = 7,
+  Bloqueado = 8,
+  Cancelado = 9,
+}
+
+export type Conferido = 'Sim' | 'Não';
+
+export interface Pedido {
+  codPedido: string;
+  codCliente: string;
+  nomeCliente: string;
+  dataEmissao: string;
+  dataPrevFat: string;
+  situacao: Situacao | null;
+  situacaoNome: string;
+  conferido: Conferido;
+  dataInclusao: string;
+  tipoNota: string;
+  representante: string;
+  qtdItens: number;
+}
+
+export interface Kpis {
+  faturadosAno: number;
+  faturadosMes: number;
+  faturadosDia: number;
+  emAberto: number;
+  disponiveisFaturar: number;
+}
+
+export interface Janela {
+  inicio: string;
+  fim: string;
+  dias: number;
+}
+
+export interface MetaSnapshot {
+  empresa: string;
+  intervaloMin: number;
+  situacoes: Record<number, string>;
+  sitFaturado: number[];
+  sitAberto: number[];
+  sitDisponivel: number[];
+  /** Situações escondidas da tabela (não afetam os KPIs). */
+  sitOcultarTabela: number[];
+  anoConsultadoEm: string | null;
+  totalAno: number;
+  /** Total da janela antes de esconder situações. */
+  totalJanela: number;
+  paginas: number;
+}
+
+export interface Snapshot {
+  atualizadoEm: string | null;
+  proximaAtualizacao: string | null;
+  ok: boolean;
+  erro: string | null;
+  janela: Janela;
+  kpis: Kpis;
+  porSituacao: Record<string, number>;
+  pedidos: Pedido[];
+  meta: MetaSnapshot;
+}
+
+/** Estado dos filtros da tela. */
+export interface Filtros {
+  situacoes: ReadonlySet<number>;
+  somenteDisponiveis: boolean;
+  busca: string;
+}
+
+export type ColunaOrdenavel = 'dataEmissao' | 'codPedido' | 'codCliente' | 'situacao' | 'conferido';
+
+export interface Ordenacao {
+  coluna: ColunaOrdenavel;
+  direcao: 1 | -1;
+}

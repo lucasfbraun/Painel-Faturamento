@@ -1,0 +1,22 @@
+services:
+  painel-faturamento:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: painel-faturamento:2.0
+    container_name: painel-faturamento
+    restart: unless-stopped
+    ports:
+      # host:container — os dois números devem bater com PORT do .env
+      - "2000:2000"
+    env_file:
+      - .env
+    environment:
+      TZ: America/Sao_Paulo
+    volumes:
+      # Mantém o último snapshot entre reinícios (a tela abre preenchida).
+      - ./data:/app/data
+    # Se o ERP (10.1.1.220) não for alcançável pela rede bridge do Docker,
+    # descomente a linha abaixo e remova a seção "ports". Atenção: no Docker
+    # Desktop para Windows o host networking não publica portas.
+    # network_mode: host

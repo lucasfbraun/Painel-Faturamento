@@ -1,0 +1,17 @@
+services:
+  painel-faturamento:
+    build: .
+    image: painel-faturamento:1.0
+    container_name: painel-faturamento
+    restart: unless-stopped
+    ports:
+      - "2000:2000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data          # guarda o último snapshot (a tela abre preenchida após restart)
+    environment:
+      TZ: America/Sao_Paulo
+    # Se o ERP (10.1.1.220) não for alcançável a partir da rede bridge do Docker,
+    # descomente a linha abaixo e remova a seção "ports" acima:
+    # network_mode: host

@@ -1,0 +1,146 @@
+/**
+ * Tokens de design — Identidade Visual Grupo Flexível.
+ *
+ * Fonte: IDENTIDADE_VISUAL.md. As cores da marca estão aqui uma única vez; os
+ * componentes referenciam papéis (--superficie, --acao, --texto-1…), nunca hex.
+ * Equivalente às `brand-*` do Tailwind do projeto de origem.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ---------- cores da marca (não alterar sem atualizar a identidade) ---- */
+  --marca-petroleo: #0c3b38;
+  --marca-petroleo-medio: #14534d;
+  --marca-teal: #0f7c70;
+  --marca-lima: #76c043;
+  --marca-verde: #4caf50;
+  --marca-ambar: #ffab40;
+  --marca-vermelho: #e06c75;
+  --marca-cinza: #f0f4f8;
+  --marca-texto: #2d3a4a;
+  --marca-suave: #7a8fa6;
+
+  /* ---------- papéis ---------------------------------------------------- */
+  --plano: var(--marca-cinza);
+  --superficie: #ffffff;
+  --superficie-2: #f7fafc;
+  --barra: linear-gradient(100deg, #0c3b38 0%, #14534d 100%);
+  --texto-1: var(--marca-texto);
+  --texto-2: #4f6076;
+  --texto-suave: var(--marca-suave);
+  --acao: var(--marca-teal);
+  --acao-hover: var(--marca-petroleo-medio);
+  --grade: #e3eaf1;
+  --borda: #dde5ee;
+  --sombra: 0 1px 2px rgba(12, 59, 56, 0.06), 0 4px 16px rgba(12, 59, 56, 0.06);
+  --sombra-forte: 0 4px 20px rgba(12, 59, 56, 0.14);
+
+  --status-bom: var(--marca-verde);
+  --status-alerta: var(--marca-ambar);
+  --status-critico: var(--marca-vermelho);
+
+  /* ---------- situações do pedido --------------------------------------- */
+  /* Paleta validada para daltonismo; a cor nunca informa sozinha — todo selo
+     traz o rótulo em texto e a tabela é a visão alternativa. */
+  --situacao-digitado: #898781;
+  --situacao-listado: #2a78d6;
+  --situacao-liberado: var(--marca-teal);
+  --situacao-sel-parcial: #4a3aa7;
+  --situacao-sel-total: #e87ba4;
+  --situacao-fat-parcial: var(--marca-ambar);
+  --situacao-fat-total: var(--marca-petroleo);
+  --situacao-transmitido: var(--marca-lima);
+  --situacao-bloqueado: var(--marca-vermelho);
+  --situacao-cancelado: #898781;
+
+  /* ---------- realces de linha ------------------------------------------ */
+  --linha-conferida: rgba(76, 175, 80, 0.1);
+  --linha-conferida-hover: rgba(76, 175, 80, 0.16);
+  --linha-bloqueada: rgba(224, 108, 117, 0.09);
+  --lavagem-teal: rgba(15, 124, 112, 0.08);
+  --lavagem-lima: rgba(118, 192, 67, 0.18);
+  --conferido-texto: #1d5a1f;
+
+  /* ---------- forma e tipografia ---------------------------------------- */
+  --raio: 14px;
+  --raio-medio: 10px;
+  --raio-pequeno: 8px;
+  --espaco: 16px;
+  --fonte: 'Roboto', 'Segoe UI', Arial, sans-serif;
+}
+
+/* --------------------------------------------------------- tema escuro --- */
+/* Mesmos papéis, reancorados no verde-petróleo da marca. */
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme='light'])) {
+    color-scheme: dark;
+
+    --plano: #071c1a;
+    --superficie: #10302c;
+    --superficie-2: #143a35;
+    --barra: linear-gradient(100deg, #071c1a 0%, #0c3b38 100%);
+    --texto-1: #eef5f3;
+    --texto-2: #b8ccc7;
+    --texto-suave: #8aa39d;
+    --acao: #1fa294;
+    --acao-hover: #26b8a8;
+    --grade: #1d443f;
+    --borda: #1d443f;
+    --sombra: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
+    --sombra-forte: 0 4px 20px rgba(0, 0, 0, 0.45);
+
+    --status-critico: #de6270;
+
+    --situacao-listado: #3987e5;
+    --situacao-liberado: #1fa294;
+    --situacao-sel-parcial: #9085e9;
+    --situacao-sel-total: #d55181;
+    --situacao-fat-total: #c7d6d2;
+    --situacao-transmitido: #79bc4a;
+    --situacao-bloqueado: #de6270;
+
+    --linha-conferida: rgba(76, 175, 80, 0.16);
+    --linha-conferida-hover: rgba(76, 175, 80, 0.24);
+    --linha-bloqueada: rgba(222, 98, 112, 0.14);
+    --lavagem-teal: rgba(31, 162, 148, 0.14);
+    --lavagem-lima: rgba(121, 188, 74, 0.22);
+    --conferido-texto: #cbe9b4;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --plano: #071c1a;
+  --superficie: #10302c;
+  --superficie-2: #143a35;
+  --barra: linear-gradient(100deg, #071c1a 0%, #0c3b38 100%);
+  --texto-1: #eef5f3;
+  --texto-2: #b8ccc7;
+  --texto-suave: #8aa39d;
+  --acao: #1fa294;
+  --acao-hover: #26b8a8;
+  --grade: #1d443f;
+  --borda: #1d443f;
+  --sombra: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
+  --sombra-forte: 0 4px 20px rgba(0, 0, 0, 0.45);
+
+  --status-critico: #de6270;
+
+  --situacao-listado: #3987e5;
+  --situacao-liberado: #1fa294;
+  --situacao-sel-parcial: #9085e9;
+  --situacao-sel-total: #d55181;
+  --situacao-fat-total: #c7d6d2;
+  --situacao-transmitido: #79bc4a;
+  --situacao-bloqueado: #de6270;
+
+  --linha-conferida: rgba(76, 175, 80, 0.16);
+  --linha-conferida-hover: rgba(76, 175, 80, 0.24);
+  --linha-bloqueada: rgba(222, 98, 112, 0.14);
+  --lavagem-teal: rgba(31, 162, 148, 0.14);
+  --lavagem-lima: rgba(121, 188, 74, 0.22);
+  --conferido-texto: #cbe9b4;
+}

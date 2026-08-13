@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Faturamento — Pedidos de Venda</title>
+<style>
+  :root {
+    color-scheme: light;
+    --plane:#f9f9f7; --surface:#fcfcfb;
+    --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --border:rgba(11,11,11,.10);
+    --good:#0ca30c; --warn:#eda100; --crit:#d03b3b;
+    --s0:#898781; --s1:#2a78d6; --s2:#0ca30c; --s3:#4a3aa7; --s4:#e87ba4;
+    --s5:#eda100; --s6:#52514e; --s7:#1baf7a; --s8:#d03b3b; --s9:#898781;
+    --tintGood:rgba(12,163,12,.07); --tintCrit:rgba(208,59,59,.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --plane:#0d0d0d; --surface:#1a1a19;
+      --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
+      --grid:#2c2c2a; --border:rgba(255,255,255,.10);
+      --good:#0ca30c; --warn:#c98500; --crit:#e66767;
+      --s0:#898781; --s1:#3987e5; --s2:#0ca30c; --s3:#9085e9; --s4:#d55181;
+      --s5:#c98500; --s6:#c3c2b7; --s7:#199e70; --s8:#e66767; --s9:#898781;
+      --tintGood:rgba(12,163,12,.12); --tintCrit:rgba(230,103,103,.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --plane:#0d0d0d; --surface:#1a1a19;
+    --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --border:rgba(255,255,255,.10);
+    --good:#0ca30c; --warn:#c98500; --crit:#e66767;
+    --s0:#898781; --s1:#3987e5; --s2:#0ca30c; --s3:#9085e9; --s4:#d55181;
+    --s5:#c98500; --s6:#c3c2b7; --s7:#199e70; --s8:#e66767; --s9:#898781;
+    --tintGood:rgba(12,163,12,.12); --tintCrit:rgba(230,103,103,.12);
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--plane); color:var(--ink);
+    font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  header {
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    padding:14px 20px; background:var(--surface); border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:5;
+  }
+  h1 { font-size:16px; margin:0; font-weight:650; letter-spacing:-.01em; }
+  .sub { color:var(--muted); font-size:12px; }
+  .spacer { flex:1; }
+  button, select, input {
+    font:inherit; color:var(--ink); background:var(--surface);
+    border:1px solid var(--border); border-radius:8px; padding:6px 10px;
+  }
+  button { cursor:pointer; }
+  button:hover { background:var(--plane); }
+  button.primary { background:var(--ink); color:var(--surface); border-color:var(--ink); }
+  main { padding:20px; max-width:1500px; margin:0 auto; }
+
+  /* ---- KPIs ---- */
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; }
+  .tile {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px 16px; display:flex; flex-direction:column; gap:2px;
+  }
+  .tile .lab { font-size:12px; color:var(--ink2); display:flex; align-items:center; gap:6px; }
+  .tile .val { font-size:34px; font-weight:600; letter-spacing:-.02em; line-height:1.1; }
+  .tile .hint { font-size:11px; color:var(--muted); }
+  .dot { width:9px; height:9px; border-radius:50%; flex:none; }
+  .tile.destaque { border-color:var(--good); background:var(--tintGood); }
+
+  /* ---- distribuição ---- */
+  .card {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:14px 16px; margin-top:16px;
+  }
+  .card h2 { font-size:13px; margin:0 0 10px; font-weight:600; color:var(--ink2); }
+  .bar { display:flex; gap:2px; height:22px; width:100%; }
+  .bar > div { border-radius:3px; min-width:3px; }
+  .legend { display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:10px; font-size:12px; color:var(--ink2); }
+  .legend span.item { display:inline-flex; align-items:center; gap:6px; }
+  .legend b { font-variant-numeric:tabular-nums; color:var(--ink); font-weight:600; }
+
+  /* ---- filtros ---- */
+  .filtros { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:16px 0 10px; }
+  .chip {
+    display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:999px;
+    border:1px solid var(--border); background:var(--surface); cursor:pointer; font-size:12.5px; color:var(--ink2);
+    user-select:none;
+  }
+  .chip.on { border-color:var(--ink); color:var(--ink); font-weight:600; }
+  .chip b { font-variant-numeric:tabular-nums; }
+  input[type=search] { min-width:230px; }
+
+  /* ---- tabela ---- */
+  .tabwrap { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:auto; max-height:60vh; }
+  table { border-collapse:separate; border-spacing:0; width:100%; font-size:13px; }
+  th, td { padding:9px 14px; text-align:left; border-bottom:1px solid var(--grid); white-space:nowrap; }
+  th {
+    position:sticky; top:0; background:var(--surface); z-index:1;
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600; cursor:pointer;
+  }
+  td.num { font-variant-numeric:tabular-nums; }
+  tbody tr:hover { background:var(--plane); }
+  tbody tr.lib { background:var(--tintGood); box-shadow:inset 3px 0 0 var(--good); }
+  tbody tr.lib:hover { filter:brightness(.98); }
+  tbody tr.blq { background:var(--tintCrit); box-shadow:inset 3px 0 0 var(--crit); }
+  tbody tr.canc td { color:var(--muted); }
+  tbody tr.canc td.pedido { text-decoration:line-through; }
+  .badge {
+    display:inline-flex; align-items:center; gap:6px; padding:2px 9px 2px 7px;
+    border-radius:999px; border:1px solid var(--border); font-size:12px; color:var(--ink);
+  }
+  .conf { display:inline-flex; align-items:center; gap:5px; font-size:12.5px; }
+  .conf.sim { color:var(--good); font-weight:600; }
+  .conf.nao { color:var(--muted); }
+  .vazio { padding:40px; text-align:center; color:var(--muted); }
+  .erro {
+    background:var(--tintCrit); border:1px solid var(--crit); color:var(--ink);
+    border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:13px;
+  }
+  .status { display:inline-flex; align-items:center; gap:7px; font-size:12px; color:var(--ink2); }
+  footer { padding:8px 20px 30px; color:var(--muted); font-size:11.5px; text-align:center; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Painel de Faturamento</h1>
+    <div class="sub" id="sub">carregando…</div>
+  </div>
+  <div class="spacer"></div>
+  <span class="status"><span class="dot" id="pulso" style="background:var(--muted)"></span><span id="statusTxt">—</span></span>
+  <button id="btnAtualizar">Atualizar agora</button>
+  <button id="btnCsv">CSV</button>
+  <button id="btnTema" title="Alternar tema">◐</button>
+</header>
+
+<main>
+  <div id="erroBox"></div>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="card">
+    <h2>Pedidos por situação — janela consultada</h2>
+    <div class="bar" id="bar"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <div class="filtros" id="filtros"></div>
+
+  <div class="tabwrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-k="dataEmissao">Data emissão</th>
+          <th data-k="codPedido">Pedido</th>
+          <th data-k="codCliente">Cliente</th>
+          <th data-k="situacao">Situação</th>
+          <th data-k="conferido">Conferido</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="vazio" id="vazio" hidden>Nenhum pedido para os filtros selecionados.</div>
+</main>
+
+<footer id="rodape"></footer>
+
+<script>
+const SIT_COR = {0:'--s0',1:'--s1',2:'--s2',3:'--s3',4:'--s4',5:'--s5',6:'--s6',7:'--s7',8:'--s8',9:'--s9'};
+const cor = (s) => `var(${SIT_COR[s] || '--s0'})`;
+
+let dados = null;
+let filtroSit = new Set();      // vazio = todas
+let somenteDisp = false;
+let busca = '';
+let ordem = { k:'dataEmissao', dir:-1 };
+
+const $ = (id) => document.getElementById(id);
+const fmtData = (iso) => iso && /^\d{4}-\d{2}-\d{2}/.test(iso) ? iso.slice(0,10).split('-').reverse().join('/') : (iso || '—');
+const fmtHora = (iso) => iso ? new Date(iso).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '—';
+
+async function carregar() {
+  try {
+    const r = await fetch('/api/dados', { cache:'no-store' });
+    dados = await r.json();
+    render();
+  } catch (e) {
+    $('statusTxt').textContent = 'sem conexão com o servidor';
+    $('pulso').style.background = 'var(--crit)';
+  }
+}
+
+function render() {
+  if (!dados) return;
+  const m = dados.meta || {};
+  const sitNomes = m.situacoes || {};
+
+  // cabeçalho / status
+  $('sub').textContent = `Empresa ${m.empresa} · janela ${fmtData(dados.janela.inicio)} a ${fmtData(dados.janela.fim)} (${dados.janela.dias} dias) · ${dados.pedidos.length} pedidos`;
+  $('pulso').style.background = dados.ok ? 'var(--good)' : 'var(--crit)';
+  $('statusTxt').textContent = dados.ok
+    ? `atualizado ${fmtHora(dados.atualizadoEm)} · próximo ${fmtHora(dados.proximaAtualizacao)}`
+    : 'falha na última consulta';
+  $('erroBox').innerHTML = dados.erro ? `<div class="erro"><b>Erro ao consultar o ERP:</b> ${escapar(dados.erro)}${dados.atualizadoEm ? ` — exibindo dados de ${fmtHora(dados.atualizadoEm)}.` : ''}</div>` : '';
+
+  // KPIs
+  const k = dados.kpis;
+  const tiles = [
+    { lab:'Faturados no ano',  val:k.faturadosAno,  hint:`situação ${(m.sitFaturado||[6]).join(', ')} · por data de emissão`, c:'--s6' },
+    { lab:'Faturados no mês',  val:k.faturadosMes,  hint:'mês corrente', c:'--s6' },
+    { lab:'Faturados no dia',  val:k.faturadosDia,  hint:'hoje', c:'--s6' },
+    { lab:'Pedidos em aberto', val:k.emAberto,      hint:`situação ${(m.sitAberto||[]).join(', ')}`, c:'--s1' },
+    { lab:'Disponíveis p/ faturar', val:k.disponiveisFaturar, hint:'situação 2 — Liberado', c:'--s2', destaque:true },
+  ];
+  $('kpis').innerHTML = tiles.map(t => `
+    <div class="tile${t.destaque?' destaque':''}">
+      <div class="lab"><span class="dot" style="background:var(${t.c})"></span>${t.lab}</div>
+      <div class="val">${t.val.toLocaleString('pt-BR')}</div>
+      <div class="hint">${t.hint}</div>
+    </div>`).join('');
+
+  // distribuição por situação
+  const porSit = dados.porSituacao || {};
+  const chaves = Object.keys(porSit).filter(x => porSit[x] > 0).sort((a,b)=>a-b);
+  const total = chaves.reduce((s,x)=>s+porSit[x],0) || 1;
+  $('bar').innerHTML = chaves.map(s =>
+    `<div style="flex:${porSit[s]};background:${cor(+s)}" title="${sitNomes[s]||s}: ${porSit[s]} pedidos (${Math.round(porSit[s]/total*100)}%)"></div>`).join('');
+  $('legend').innerHTML = chaves.map(s =>
+    `<span class="item"><span class="dot" style="background:${cor(+s)}"></span>${sitNomes[s]||s} <b>${porSit[s]}</b></span>`).join('');
+
+  // filtros
+  $('filtros').innerHTML =
+    `<span class="chip${somenteDisp?' on':''}" data-disp="1"><span class="dot" style="background:var(--s2)"></span>Só disponíveis p/ faturar</span>` +
+    chaves.map(s => `<span class="chip${filtroSit.has(+s)?' on':''}" data-sit="${s}"><span class="dot" style="background:${cor(+s)}"></span>${sitNomes[s]||s} <b>${porSit[s]}</b></span>`).join('') +
+    `<span class="spacer"></span><input type="search" id="busca" placeholder="Buscar pedido ou cliente" value="${escapar(busca)}">`;
+
+  $('filtros').querySelectorAll('[data-sit]').forEach(el => el.onclick = () => {
+    const s = +el.dataset.sit;
+    filtroSit.has(s) ? filtroSit.delete(s) : filtroSit.add(s);
+    render();
+  });
+  $('filtros').querySelector('[data-disp]').onclick = () => { somenteDisp = !somenteDisp; render(); };
+  const b = $('busca');
+  b.oninput = () => { busca = b.value; renderTabela(); };
+
+  renderTabela();
+  $('rodape').textContent = `Consulta anual atualizada em ${fmtHora(m.anoConsultadoEm)} · ${m.totalAno||0} pedidos no ano · ciclo de ${m.intervaloMin} min`;
+}
+
+function filtrados() {
+  const disp = new Set((dados.meta.sitDisponivel)||[2]);
+  const q = busca.trim().toLowerCase();
+  let lista = dados.pedidos.filter(p => {
+    if (somenteDisp && !disp.has(p.situacao)) return false;
+    if (filtroSit.size && !filtroSit.has(p.situacao)) return false;
+    if (q && !(`${p.codPedido} ${p.codCliente} ${p.nomeCliente}`.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  const { k, dir } = ordem;
+  lista.sort((a,b) => {
+    const va = a[k] ?? '', vb = b[k] ?? '';
+    if (typeof va === 'number' && typeof vb === 'number') return (va-vb)*dir;
+    return String(va).localeCompare(String(vb), 'pt-BR', { numeric:true }) * dir;
+  });
+  return lista;
+}
+
+function renderTabela() {
+  const lista = filtrados();
+  const sitNomes = dados.meta.situacoes || {};
+  $('vazio').hidden = lista.length > 0;
+  $('tbody').innerHTML = lista.map(p => {
+    const cls = p.situacao === 2 ? 'lib' : p.situacao === 8 ? 'blq' : p.situacao === 9 ? 'canc' : '';
+    const conf = /^s/i.test(p.conferido) ? 'sim' : 'nao';
+    return `<tr class="${cls}">
+      <td class="num">${fmtData(p.dataEmissao)}</td>
+      <td class="num pedido"><b>${escapar(p.codPedido)}</b></td>
+      <td class="num" title="${escapar(p.nomeCliente)}">${escapar(String(p.codCliente))}${p.nomeCliente?` <span style="color:var(--muted)">${escapar(p.nomeCliente.slice(0,34))}</span>`:''}</td>
+      <td><span class="badge"><span class="dot" style="background:${cor(p.situacao)}"></span>${escapar(sitNomes[p.situacao] || p.situacaoNome)}</span></td>
+      <td><span class="conf ${conf}">${conf==='sim'?'✓':'○'} ${escapar(p.conferido)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function escapar(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ordenação por cabeçalho
+document.querySelectorAll('th[data-k]').forEach(th => th.onclick = () => {
+  const k = th.dataset.k;
+  ordem = { k, dir: ordem.k === k ? -ordem.dir : 1 };
+  renderTabela();
+});
+
+$('btnAtualizar').onclick = async () => {
+  $('btnAtualizar').disabled = true;
+  await fetch('/api/atualizar', { method:'POST' });
+  setTimeout(async () => { await carregar(); $('btnAtualizar').disabled = false; }, 3000);
+};
+
+$('btnCsv').onclick = () => {
+  const linhas = [['dataEmissao','codPedido','codCliente','nomeCliente','situacao','conferido']];
+  filtrados().forEach(p => linhas.push([p.dataEmissao,p.codPedido,p.codCliente,p.nomeCliente,p.situacaoNome,p.conferido]));
+  const csv = '﻿' + linhas.map(l => l.map(c => `"${String(c ?? '').replace(/"/g,'""')}"`).join(';')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+  a.download = `pedidos_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+};
+
+$('btnTema').onclick = () => {
+  const atual = document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme', atual === 'dark' ? 'light' : 'dark');
+  render();
+};
+
+carregar();
+setInterval(carregar, 30000); // o servidor consulta o ERP a cada 5 min; a tela só relê o cache
+</script>
+</body>
+</html>
