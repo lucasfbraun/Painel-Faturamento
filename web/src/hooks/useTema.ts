@@ -10,7 +10,15 @@ function temaAtual(): Tema | null {
 }
 
 function preferenciaDoSistema(): Tema {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro';
+  // matchMedia existe em qualquer navegador relevante, mas alguns aparelhos de TV
+  // não implementam prefers-color-scheme e devolvem um objeto inútil. Na dúvida,
+  // tema claro: é o que se lê melhor num televisor em sala iluminada.
+  if (typeof window.matchMedia !== 'function') return 'claro';
+  try {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro';
+  } catch {
+    return 'claro';
+  }
 }
 
 /**

@@ -2,6 +2,23 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [4.4.1] — 2026-08-14
+
+### Corrigido
+- **O aviso "Navegador não compatível" podia apagar um painel que estava
+  funcionando.** Navegadores WebKit com o defeito conhecido do Safari 10.1 —
+  vários televisores entre eles — executam o script `nomodule` mesmo suportando
+  módulos. Como o script escrevia na tela às cegas no `DOMContentLoaded`, ele
+  substituía a aplicação já montada. Agora só age se, passados 2,5 s, nada tiver
+  sido montado.
+- `matchMedia` protegido: aparelho que não implementa `prefers-color-scheme` não
+  derruba mais a montagem da tela.
+
+### Adicionado
+- `diagnostico.js`: rede de segurança que, se a tela não montar em 8 s, escreve
+  na própria página o erro capturado, o endereço e a identificação do navegador.
+  Em televisor não há console — sem isso, uma falha vira tela preta muda.
+
 ## [4.4.0] — 2026-08-14
 
 ### Corrigido

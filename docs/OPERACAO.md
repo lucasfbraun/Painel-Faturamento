@@ -124,7 +124,11 @@ Navegador de televisor (Tizen, webOS, Android TV) fica anos atrás do Chrome de
 desktop. O bundle é compilado para **Chrome 61+**, mas se o aparelho for mais antigo
 que isso a tela mostra um aviso em vez de ficar preta.
 
-**Primeiro passo, sempre:** abra `http://<servidor>:2000/compat.html` **no próprio
+**A própria tela avisa.** Se o painel não montar em 8 segundos, a página passa a
+mostrar o erro capturado, o endereço e a identificação do navegador — é só fotografar
+e enviar. Tela preta muda não deve mais acontecer.
+
+**Se precisar de mais detalhe:** abra `http://<servidor>:2000/compat.html` **no próprio
 televisor**. A página é feita em JavaScript antigo (roda em qualquer aparelho) e
 mostra o modelo do navegador e quais recursos faltam. Envie o resultado ao TI.
 
