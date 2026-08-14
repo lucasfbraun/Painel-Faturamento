@@ -52,39 +52,7 @@ input {
 }
 
 .barra-topo__marca {
-  display: flex;
-  align-items: center;
-  gap: 14px;
   min-width: 0;
-}
-
-.selo-logo {
-  background: #fff;
-  border-radius: var(--raio-medio);
-  padding: 6px 10px;
-  display: flex;
-  align-items: center;
-  flex: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-}
-
-.selo-logo img {
-  height: 30px;
-  width: auto;
-  display: block;
-  object-fit: contain;
-}
-
-.selo-logo__texto {
-  font-weight: 700;
-  font-size: 15px;
-  letter-spacing: -0.02em;
-  color: var(--marca-petroleo);
-  white-space: nowrap;
-}
-
-.selo-logo__texto span {
-  color: var(--marca-lima);
 }
 
 .barra-topo h1 {

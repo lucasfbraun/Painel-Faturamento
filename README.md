@@ -218,10 +218,10 @@ da marca aparecem uma vez só, e os componentes referenciam papéis
 | Vermelho `#E06C75` | Bloqueado, avisos de erro |
 | Cinza `#F0F4F8` | fundo da página |
 
-**Logo:** coloque o arquivo em **`web/public/logo.png`** e rode `npm run build:web`.
-Ele aparece dentro do selo branco arredondado da barra (o texto do logo é escuro e
-sumiria sobre o petróleo). Enquanto o arquivo não existir, a barra usa a assinatura
-em texto — nada quebra.
+**Logo:** a barra superior **não exibe o logo** — o painel roda em TV corporativa que
+já mostra a marca na própria barra do sistema, e repetir tomaria espaço útil da tela.
+A identidade continua presente pelas cores e pela tipografia. Para reintroduzi-lo,
+o ponto é `web/src/componentes/Cabecalho.tsx`.
 
 **Gráficos:** rampa ordinal de uma cor só (teal da marca), do claro ao escuro conforme
 a magnitude cresce — validada nos dois temas: luminosidade monotônica, degraus visíveis

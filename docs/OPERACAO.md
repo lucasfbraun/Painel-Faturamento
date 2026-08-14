@@ -137,9 +137,6 @@ Tudo no `.env`, sem tocar no código: `SIT_FATURADO`, `SIT_ABERTO`,
 `SIT_DISPONIVEL`, `SIT_OCULTAR_TABELA`, `DIAS_RETROATIVOS`, `POLL_INTERVALO_MIN`,
 `ANO_INTERVALO_MIN`, `DIAS_SERIE`. Depois, `docker compose restart`.
 
-### Trocar o logo
-Substitua `web/public/logo.png` e `docker compose up -d --build`.
-
 ### Reduzir a carga no ERP
 `ANO_INTERVALO_MIN=30` ou `60` — a consulta anual passa a ser feita de hora em
 hora, e a tabela continua atualizando a cada 5 minutos.

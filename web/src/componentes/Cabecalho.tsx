@@ -1,6 +1,5 @@
 import type { Snapshot } from '../tipos';
 import { formatarData, formatarHora } from '../utils/formatadores';
-import { Logo } from './Logo';
 
 interface Props {
   snapshot: Snapshot | null;
@@ -42,12 +41,11 @@ export function Cabecalho({ snapshot, atualizando, aoAtualizar, aoExportar, aoAl
 
   return (
     <header className="barra-topo">
+      {/* Sem logo: o painel roda em TV corporativa que já exibe a marca na
+          própria barra do sistema — repetir tomaria espaço útil da tela. */}
       <div className="barra-topo__marca">
-        <Logo />
-        <div>
-          <h1>Painel de Faturamento</h1>
-          <p className="barra-topo__contexto">{descreverContexto(snapshot)}</p>
-        </div>
+        <h1>Painel de Faturamento</h1>
+        <p className="barra-topo__contexto">{descreverContexto(snapshot)}</p>
       </div>
 
       <div className="barra-topo__acoes">

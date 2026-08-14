@@ -27,7 +27,7 @@ faturamento ou grava qualquer coisa no sistema — é uma janela, não um formul
 
 | Elemento | O que é |
 |---|---|
-| Logo + título | identificação do painel |
+| Título | identificação do painel |
 | Linha cinza abaixo do título | empresa, período consultado e quantos pedidos estão na tabela |
 | Pílula com bolinha verde | horário da última atualização e do próximo ciclo |
 | **Atualizar agora** | força uma consulta ao ERP sem esperar os 5 minutos |

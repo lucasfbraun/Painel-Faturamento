@@ -2,6 +2,12 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [3.4.0] — 2026-08-14
+
+### Removido
+- Logo da barra superior: o painel roda em TV corporativa que já exibe a marca na
+  barra do sistema. A identidade visual segue nas cores e na tipografia.
+
 ## [3.3.1] — 2026-08-14
 
 ### Alterado
