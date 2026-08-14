@@ -66,7 +66,7 @@ Quanto tempo o pedido passa na separação, medido entre o carimbo de **aceite**
 | **Mediana** | o caso típico. Se estiver bem abaixo da média, alguns pedidos muito lentos estão puxando a média |
 | **P90** | 9 em cada 10 pedidos ficam abaixo desse tempo — é o "pior caso normal" |
 | **Mais rápido / mais lento** | os extremos do período |
-| **Amostra** | quantos pedidos entraram na conta |
+| **Pedidos medidos** | quantos pedidos entraram na conta — só entram os que têm o aceite **e** o retorno do picking preenchidos no ERP |
 
 O histograma abaixo mostra quantos pedidos caem em cada faixa de tempo. Passe o mouse
 para ver a quantidade e o percentual.
@@ -74,6 +74,11 @@ para ver a quantidade e o percentual.
 > **Pedidos sem carimbo ficam fora da conta.** Se um pedido não tem o aceite ou o
 > retorno do picking preenchido, ele não entra na média — contar como zero faria o
 > indicador parecer melhor do que é. O rodapé do cartão informa quantos ficaram de fora.
+>
+> Exemplo: "Pedidos medidos 122" com "20 pedidos sem o aceite ou o retorno do picking
+> preenchido" significa que a média descreve 122 dos 142 pedidos da janela.
+
+Passar o mouse sobre qualquer uma das quatro métricas mostra a explicação dela.
 
 ### 2.4 Ritmo de emissão
 
@@ -194,8 +199,8 @@ diz a causa provável (token expirado, ERP fora do ar, rede). O
 ## 7. Perguntas frequentes
 
 **A média de picking parece otimista demais.**
-Confira o rodapé do cartão: se muitos pedidos estão sem carimbo, a média descreve só
-uma parte da operação. Compare também a média com a mediana — uma diferença grande
+Confira "Pedidos medidos" e o rodapé do cartão: se muitos pedidos estão sem carimbo, a
+média descreve só uma parte da operação. Compare também a média com a mediana — uma diferença grande
 significa que poucos pedidos muito lentos estão distorcendo a média.
 
 **O número do KPI não bate com o que vejo no ERP.**

@@ -683,6 +683,7 @@ tbody tr.linha--bloqueada:not(.linha--conferida) {
 .metrica {
   background: var(--superficie);
   padding: 7px 9px;
+  cursor: help;
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -693,7 +694,8 @@ tbody tr.linha--bloqueada:not(.linha--conferida) {
 }
 
 .metrica__rotulo {
-  font-size: 10px;
+  font-size: 9.5px;
+  white-space: nowrap;
   text-transform: uppercase;
   letter-spacing: 0.07em;
   color: var(--texto-suave);

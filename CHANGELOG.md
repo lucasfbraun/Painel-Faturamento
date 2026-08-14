@@ -2,6 +2,15 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [3.3.1] — 2026-08-14
+
+### Alterado
+- "Amostra" virou **"Pedidos medidos"** no cartão Aceite → Picking, e as quatro
+  métricas ganharam explicação ao passar o mouse. O termo estatístico não dizia
+  nada para quem usa a tela.
+- Rodapé do cartão reescrito em linguagem direta ("sem o aceite ou o retorno do
+  picking preenchido — fora do cálculo").
+
 ## [3.3.0] — 2026-08-14
 
 ### Alterado

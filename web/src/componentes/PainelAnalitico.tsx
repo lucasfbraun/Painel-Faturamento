@@ -12,15 +12,34 @@ interface Props {
 interface Metrica {
   rotulo: string;
   valor: string;
+  /** Explicação que aparece ao passar o mouse. */
+  ajuda?: string;
   destaque?: boolean;
 }
 
 function metricasDePicking(picking: Analitico['picking']): Metrica[] {
   return [
-    { rotulo: 'Média', valor: formatarDuracao(picking.mediaHoras), destaque: true },
-    { rotulo: 'Mediana', valor: formatarDuracao(picking.medianaHoras) },
-    { rotulo: 'P90', valor: formatarDuracao(picking.p90Horas) },
-    { rotulo: 'Amostra', valor: String(picking.amostra) },
+    {
+      rotulo: 'Média',
+      valor: formatarDuracao(picking.mediaHoras),
+      ajuda: 'Tempo médio entre o aceite do pedido e o retorno da separação.',
+      destaque: true,
+    },
+    {
+      rotulo: 'Mediana',
+      valor: formatarDuracao(picking.medianaHoras),
+      ajuda: 'O caso típico: metade dos pedidos ficou abaixo desse tempo. Bem menor que a média significa que alguns pedidos muito lentos estão puxando a média para cima.',
+    },
+    {
+      rotulo: 'P90',
+      valor: formatarDuracao(picking.p90Horas),
+      ajuda: '9 em cada 10 pedidos ficaram abaixo desse tempo — o pior caso normal.',
+    },
+    {
+      rotulo: 'Pedidos medidos',
+      valor: String(picking.amostra),
+      ajuda: 'Quantos pedidos entraram no cálculo. Só entram os que têm o aceite e o retorno do picking preenchidos no ERP.',
+    },
   ];
 }
 
@@ -45,7 +64,11 @@ export function PainelAnalitico({ analitico, diasDaJanela }: Props) {
           <>
             <div className="metricas">
               {metricasDePicking(picking).map((metrica) => (
-                <div key={metrica.rotulo} className={`metrica${metrica.destaque ? ' metrica--destaque' : ''}`}>
+                <div
+                  key={metrica.rotulo}
+                  className={`metrica${metrica.destaque ? ' metrica--destaque' : ''}`}
+                  title={metrica.ajuda}
+                >
                   <span className="metrica__rotulo">{metrica.rotulo}</span>
                   <span className="metrica__valor">{metrica.valor}</span>
                 </div>
@@ -54,16 +77,17 @@ export function PainelAnalitico({ analitico, diasDaJanela }: Props) {
             <HistogramaPicking faixas={picking.distribuicao} total={picking.amostra} />
             {(picking.semMedicao > 0 || picking.inconsistentes > 0) && (
               <p className="cartao__rodape">
-                {picking.semMedicao > 0 && `${picking.semMedicao} pedidos sem carimbo de aceite ou picking`}
+                {picking.semMedicao > 0 && `${picking.semMedicao} pedidos sem o aceite ou o retorno do picking preenchido`}
                 {picking.semMedicao > 0 && picking.inconsistentes > 0 && ' · '}
                 {picking.inconsistentes > 0 && `${picking.inconsistentes} com picking anterior ao aceite`}
-                {' — fora da amostra'}
+                {' — fora do cálculo'}
               </p>
             )}
           </>
         ) : (
           <p className="estado-vazio">
-            Nenhum pedido da janela tem os carimbos de aceite e retorno do picking preenchidos.
+            Nenhum pedido da janela tem o aceite e o retorno do picking preenchidos — sem
+            esses dois campos não há como medir o tempo de separação.
           </p>
         )}
       </article>
