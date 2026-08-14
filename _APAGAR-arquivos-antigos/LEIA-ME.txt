@@ -1,0 +1,13 @@
+Esta pasta contém apenas arquivos ANTIGOS, que nada têm a ver com o painel em uso.
+
+  public-_v1_antiga/index.html   -> a primeira versão do painel (2026-08-13), aquela
+                                    com CSS e JavaScript dentro do HTML. Foi
+                                    substituída pelo front-end em React + TypeScript
+                                    que vive em web/src/. Está aqui só como histórico.
+  Logo.tsx                       -> componente do logo, removido a pedido.
+  painel-v*.zip                  -> pacotes de instalação já aplicados.
+
+NADA AQUI É USADO PELA APLICAÇÃO. O Dockerfile copia apenas src/, tools/, tests/ e
+web/ — esta pasta nem entra na imagem.
+
+Pode apagar a pasta inteira com segurança.
