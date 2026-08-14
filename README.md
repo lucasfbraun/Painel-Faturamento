@@ -154,6 +154,8 @@ um segundo GET a partir de `<ano>-01-01`, com cache próprio (`ANO_INTERVALO_MIN
 | Aceite → Picking | média de `retornoPicking − dataHoraAceite` | janela de 60 dias |
 
 Configurável no `.env` sem tocar no código: `SIT_FATURADO`, `SIT_ABERTO`, `SIT_DISPONIVEL`.
+A identificação da barra também: `PAINEL_TITULO` e `PAINEL_SUBTITULO` — replicar o
+painel para outra filial é trocar duas linhas do `.env`, sem recompilar.
 
 ### Tempo de separação (Aceite → Picking)
 

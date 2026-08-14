@@ -32,6 +32,13 @@ export interface ConfigRegras {
   readonly ocultarNaTabela: readonly number[];
 }
 
+export interface ConfigIdentificacao {
+  /** Título principal exibido na barra do topo. */
+  readonly titulo: string;
+  /** Linha que identifica a unidade — some quando vazia. */
+  readonly subtitulo: string;
+}
+
 export interface Config {
   readonly porta: number;
   /** Interface de escuta. 127.0.0.1 restringe o painel à própria máquina. */
@@ -39,6 +46,7 @@ export interface Config {
   readonly erp: ConfigErp;
   readonly coleta: ConfigColeta;
   readonly regras: ConfigRegras;
+  readonly identificacao: ConfigIdentificacao;
   readonly caminhoWeb: string;
   readonly arquivoSnapshot: string;
 }
@@ -104,6 +112,10 @@ export function carregarConfig(env: NodeJS.ProcessEnv = process.env): Config {
         Situacao.FaturadoTotal,
         Situacao.Cancelado,
       ]),
+    }),
+    identificacao: Object.freeze({
+      titulo: texto(env['PAINEL_TITULO'], 'Painel de Faturamento'),
+      subtitulo: texto(env['PAINEL_SUBTITULO'], 'Filial Nordeste · Grupo Flexível'),
     }),
     caminhoWeb: texto(env['CAMINHO_WEB'], path.join(RAIZ, 'web', 'dist')),
     arquivoSnapshot: texto(env['ARQUIVO_SNAPSHOT'], path.join(RAIZ, 'data', 'snapshot.json')),

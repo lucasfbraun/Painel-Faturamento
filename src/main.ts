@@ -36,6 +36,8 @@ async function principal(): Promise<void> {
   const coletor = new ColetorDePedidos(
     repositorio,
     {
+      titulo: config.identificacao.titulo,
+      subtitulo: config.identificacao.subtitulo,
       empresa: config.erp.empresa,
       diasRetroativos: config.coleta.diasRetroativos,
       intervaloMin: config.coleta.intervaloMin,

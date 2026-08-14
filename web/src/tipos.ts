@@ -79,6 +79,8 @@ export interface Janela {
 }
 
 export interface MetaSnapshot {
+  titulo: string;
+  subtitulo: string;
   empresa: string;
   intervaloMin: number;
   situacoes: Record<number, string>;

@@ -63,6 +63,10 @@ export interface Janela {
 export type ContagemPorSituacao = Readonly<Record<string, number>>;
 
 export interface MetaSnapshot {
+  /** Título do painel, definido em PAINEL_TITULO. */
+  readonly titulo: string;
+  /** Unidade/filial, definida em PAINEL_SUBTITULO. */
+  readonly subtitulo: string;
   readonly empresa: string;
   readonly intervaloMin: number;
   readonly situacoes: Readonly<Record<number, string>>;

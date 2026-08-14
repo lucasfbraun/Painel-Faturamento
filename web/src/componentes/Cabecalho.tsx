@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { Snapshot } from '../tipos';
 import { formatarData, formatarHora } from '../utils/formatadores';
 
@@ -9,6 +10,8 @@ interface Props {
   aoAlternarTema: () => void;
 }
 
+const TITULO_PADRAO = 'Painel de Faturamento';
+
 /** Meia-lua: desenhada em SVG para não depender de glifo de fonte. */
 function IconeTema() {
   return (
@@ -19,15 +22,21 @@ function IconeTema() {
   );
 }
 
-function descreverContexto(snapshot: Snapshot | null): string {
+/**
+ * Contexto técnico da consulta — período, empresa e o que está na tabela.
+ * Fica na terceira linha, em corpo menor: é referência, não identificação.
+ */
+function descreverConsulta(snapshot: Snapshot | null): string {
   if (!snapshot) return 'carregando…';
   const { janela, meta, pedidos } = snapshot;
   const ocultos = Math.max(0, meta.totalJanela - pedidos.length);
-  const contagem =
-    ocultos > 0
-      ? `${pedidos.length} em acompanhamento · ${ocultos} faturados/cancelados ocultos`
-      : `${pedidos.length} pedidos`;
-  return `Empresa ${meta.empresa} · ${formatarData(janela.inicio)} a ${formatarData(janela.fim)} (${janela.dias} dias) · ${contagem}`;
+  const partes = [
+    `Empresa ${meta.empresa}`,
+    `${formatarData(janela.inicio)} a ${formatarData(janela.fim)} (${janela.dias} dias)`,
+    `${pedidos.length} pedidos em acompanhamento`,
+  ];
+  if (ocultos > 0) partes.push(`${ocultos} faturados/cancelados ocultos`);
+  return partes.join(' · ');
 }
 
 function descreverStatus(snapshot: Snapshot | null): string {
@@ -38,14 +47,21 @@ function descreverStatus(snapshot: Snapshot | null): string {
 
 export function Cabecalho({ snapshot, atualizando, aoAtualizar, aoExportar, aoAlternarTema }: Props) {
   const saudavel = snapshot?.ok ?? false;
+  const titulo = snapshot?.meta.titulo || TITULO_PADRAO;
+  const subtitulo = snapshot?.meta.subtitulo ?? '';
+
+  // A aba do navegador também identifica a unidade — ajuda quando há vários
+  // painéis abertos ou vários televisores em salas diferentes.
+  useEffect(() => {
+    document.title = subtitulo ? `${titulo} — ${subtitulo}` : titulo;
+  }, [titulo, subtitulo]);
 
   return (
     <header className="barra-topo">
-      {/* Sem logo: o painel roda em TV corporativa que já exibe a marca na
-          própria barra do sistema — repetir tomaria espaço útil da tela. */}
-      <div className="barra-topo__marca">
-        <h1>Painel de Faturamento</h1>
-        <p className="barra-topo__contexto">{descreverContexto(snapshot)}</p>
+      <div className="barra-topo__identidade">
+        <h1>{titulo}</h1>
+        {subtitulo && <p className="barra-topo__unidade">{subtitulo}</p>}
+        <p className="barra-topo__contexto">{descreverConsulta(snapshot)}</p>
       </div>
 
       <div className="barra-topo__acoes">

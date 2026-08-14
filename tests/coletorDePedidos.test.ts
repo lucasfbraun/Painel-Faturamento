@@ -6,6 +6,8 @@ import type { RepositorioPedidosErp } from '../src/erp/repositorioPedidos.js';
 import { loggerMudo } from '../src/shared/logger.js';
 
 const OPCOES = {
+  titulo: 'Painel de Faturamento',
+  subtitulo: 'Filial Nordeste · Grupo Flexível',
   empresa: '4',
   diasRetroativos: 60,
   intervaloMin: 5,
@@ -116,6 +118,7 @@ describe('ColetorDePedidos', () => {
 
     assert.deepEqual(coletor.snapshot.meta.sitDisponivel, [Situacao.Liberado]);
     assert.equal(coletor.snapshot.meta.empresa, '4');
+    assert.equal(coletor.snapshot.meta.subtitulo, 'Filial Nordeste · Grupo Flexível');
     assert.equal(coletor.snapshot.meta.situacoes[Situacao.Liberado], 'Liberado');
   });
 });

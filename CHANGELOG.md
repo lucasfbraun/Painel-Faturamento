@@ -2,6 +2,20 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [4.2.0] — 2026-08-14
+
+### Adicionado
+- Barra do topo agora identifica a finalidade do painel: título em destaque e a
+  unidade logo abaixo, em verde-limão ("Filial Nordeste · Grupo Flexível").
+- `PAINEL_TITULO` e `PAINEL_SUBTITULO` no `.env` — replicar o painel para outra
+  filial não exige tocar no código.
+- O título da aba do navegador passa a incluir a unidade, o que ajuda quando há
+  vários painéis abertos ou televisores em salas diferentes.
+
+### Alterado
+- Contexto técnico (empresa, período, contagens) desceu para uma terceira linha,
+  em corpo menor: é referência, não identificação.
+
 ## [4.1.0] — 2026-08-14
 
 ### Alterado

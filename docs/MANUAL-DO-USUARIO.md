@@ -27,8 +27,9 @@ faturamento ou grava qualquer coisa no sistema — é uma janela, não um formul
 
 | Elemento | O que é |
 |---|---|
-| Título | identificação do painel |
-| Linha cinza abaixo do título | empresa, período consultado e quantos pedidos estão na tabela |
+| **Painel de Faturamento** | o que a tela mostra |
+| **Filial Nordeste · Grupo Flexível** (em verde-limão) | de qual unidade são estes números |
+| Linha cinza abaixo | empresa, período consultado e quantos pedidos estão na tabela |
 | Pílula com bolinha verde | horário da última atualização e do próximo ciclo |
 | **Atualizar agora** | força uma consulta ao ERP sem esperar os 5 minutos |
 | **Exportar CSV** | baixa a tabela **como ela está filtrada** na tela, pronta para o Excel |

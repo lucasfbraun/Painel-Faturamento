@@ -7,6 +7,8 @@ import { dataDeHoje, inicioDoAno, subtrairDias } from '../shared/datas.js';
 import type { Logger } from '../shared/logger.js';
 
 export interface OpcoesColetor {
+  readonly titulo: string;
+  readonly subtitulo: string;
   readonly empresa: string;
   readonly diasRetroativos: number;
   readonly intervaloMin: number;
@@ -164,6 +166,8 @@ export class ColetorDePedidos {
         porDia: [],
       },
       meta: {
+        titulo: this.opcoes.titulo,
+        subtitulo: this.opcoes.subtitulo,
         empresa: this.opcoes.empresa,
         intervaloMin: this.opcoes.intervaloMin,
         situacoes: ROTULOS_SITUACAO,

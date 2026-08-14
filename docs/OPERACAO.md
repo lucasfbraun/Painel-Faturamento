@@ -137,6 +137,10 @@ Tudo no `.env`, sem tocar no código: `SIT_FATURADO`, `SIT_ABERTO`,
 `SIT_DISPONIVEL`, `SIT_OCULTAR_TABELA`, `DIAS_RETROATIVOS`, `POLL_INTERVALO_MIN`,
 `ANO_INTERVALO_MIN`, `DIAS_SERIE`. Depois, `docker compose restart`.
 
+### Mudar o título ou a unidade exibida
+`PAINEL_TITULO` e `PAINEL_SUBTITULO` no `.env`, depois `docker compose restart`. Útil
+quando o mesmo container for replicado para outra filial — nada muda no código.
+
 ### Restringir o acesso à própria máquina
 Troque `"2000:2000"` por `"127.0.0.1:2000:2000"` no `docker-compose.yml` (ou
 `HOST=127.0.0.1` no `.env`, fora do Docker) e recrie o container.
