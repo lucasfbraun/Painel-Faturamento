@@ -137,6 +137,10 @@ Tudo no `.env`, sem tocar no código: `SIT_FATURADO`, `SIT_ABERTO`,
 `SIT_DISPONIVEL`, `SIT_OCULTAR_TABELA`, `DIAS_RETROATIVOS`, `POLL_INTERVALO_MIN`,
 `ANO_INTERVALO_MIN`, `DIAS_SERIE`. Depois, `docker compose restart`.
 
+### Restringir o acesso à própria máquina
+Troque `"2000:2000"` por `"127.0.0.1:2000:2000"` no `docker-compose.yml` (ou
+`HOST=127.0.0.1` no `.env`, fora do Docker) e recrie o container.
+
 ### Reduzir a carga no ERP
 `ANO_INTERVALO_MIN=30` ou `60` — a consulta anual passa a ser feita de hora em
 hora, e a tabela continua atualizando a cada 5 minutos.
@@ -162,7 +166,8 @@ curl http://localhost:2000/api/health
 E, no código, antes de subir uma alteração:
 
 ```bash
-npm test        # 74 testes; nenhum pode falhar
+npm test        # 91 testes; nenhum pode falhar
+npm audit       # e, no front-end: npm --prefix web audit
 ```
 
 ---
@@ -175,3 +180,4 @@ npm test        # 74 testes; nenhum pode falhar
 - O painel é somente leitura — não há qualquer escrita no ERP.
 - Não há autenticação na tela: quem alcança a porta 2000 vê o painel. Se precisar
   expor fora da rede interna, coloque um proxy reverso com autenticação na frente.
+  Detalhes e alternativas em [SEGURANCA.md](SEGURANCA.md).

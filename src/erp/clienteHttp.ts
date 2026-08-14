@@ -53,7 +53,7 @@ export class ClienteHttpErp {
             try {
               resolver({ corpo: texto ? JSON.parse(texto) : null, headers: resposta.headers });
             } catch {
-              rejeitar(new ErroErp(`Resposta do ERP não é JSON válido: ${texto.slice(0, 200)}`, status, texto));
+              rejeitar(new ErroErp('A resposta do ERP não é um JSON válido', status, texto));
             }
           });
         },

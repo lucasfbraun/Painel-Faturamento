@@ -58,9 +58,9 @@ async function principal(): Promise<void> {
     { coletor, arquivos: new ServidorDeArquivos(config.caminhoWeb) },
     logger.comContexto('http'),
   );
-  await servidor.ouvir(config.porta);
+  await servidor.ouvir(config.porta, config.endereco);
 
-  logger.info(`painel disponível em http://localhost:${config.porta}`);
+  logger.info(`painel disponível em http://localhost:${config.porta} (escutando em ${config.endereco})`);
   logger.info(
     `ERP ${config.erp.baseUrl}${config.erp.caminho} | empresa ${config.erp.empresa} | ` +
       `janela ${config.coleta.diasRetroativos} dias | ciclo ${config.coleta.intervaloMin} min`,

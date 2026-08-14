@@ -34,6 +34,8 @@ export interface ConfigRegras {
 
 export interface Config {
   readonly porta: number;
+  /** Interface de escuta. 127.0.0.1 restringe o painel à própria máquina. */
+  readonly endereco: string;
   readonly erp: ConfigErp;
   readonly coleta: ConfigColeta;
   readonly regras: ConfigRegras;
@@ -75,6 +77,7 @@ function listaDeInteiros(valor: string | undefined, padrao: readonly number[]): 
 export function carregarConfig(env: NodeJS.ProcessEnv = process.env): Config {
   return Object.freeze({
     porta: inteiro(env['PORT'], 2000),
+    endereco: texto(env['HOST'], '0.0.0.0'),
     erp: Object.freeze({
       baseUrl: texto(env['ERP_BASE_URL'], 'https://10.1.1.220').replace(/\/+$/, ''),
       caminho: texto(env['ERP_PATH'], '/api/comercial/v10/pedidoVenda'),

@@ -2,6 +2,35 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [4.0.0] — 2026-08-14
+
+### Segurança
+- Cabeçalhos em toda resposta: CSP restritiva, `nosniff`, `X-Frame-Options: DENY`,
+  `Referrer-Policy`, `Permissions-Policy` e `Cross-Origin-Resource-Policy`.
+- `POST /api/atualizar` passa a exigir mesma origem e a respeitar um limite de
+  1 chamada a cada 10 segundos.
+- Mensagens de erro do ERP deixaram de carregar o corpo da resposta para a tela —
+  ele agora vai só para o log do servidor.
+- Servidor de estáticos: comparação de caminho corrigida (prefixo com separador),
+  rejeição de byte nulo e de codificação percentual inválida.
+- Verbos fora de GET/HEAD/POST recebem 405; timeouts de cabeçalho, requisição e
+  keep-alive definidos.
+- Container endurecido: `read_only`, `cap_drop: ALL`, `no-new-privileges`, `/tmp` em
+  memória e limite de 512 MB.
+- `HOST` no `.env` para restringir a escuta a `127.0.0.1`.
+- Vite atualizado para a linha 7 — `npm audit` limpo (a versão anterior arrastava
+  uma vulnerabilidade do esbuild no servidor de desenvolvimento).
+- Build deixou de embutir assets como `data:` URI, para a CSP poder manter
+  `font-src 'self'` sem exceção.
+- 17 testes novos cobrindo cada item acima.
+
+### Adicionado
+- `docs/SEGURANCA.md`: superfície de ataque, proteções, riscos aceitos e checklist.
+
+### Corrigido
+- `LimitadorDeChamadas` iniciava em 0 e barrava a primeira chamada sob relógio
+  simulado (encontrado por teste).
+
 ## [3.4.0] — 2026-08-14
 
 ### Removido

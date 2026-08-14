@@ -23,12 +23,28 @@ export class ServidorDeArquivos {
   constructor(private readonly raiz: string) {}
 
   async servir(caminhoUrl: string, resposta: ServerResponse): Promise<void> {
-    const relativo = caminhoUrl === '/' ? 'index.html' : decodeURIComponent(caminhoUrl).replace(/^\/+/, '');
-    const alvo = path.resolve(this.raiz, relativo);
+    let relativo: string;
+    try {
+      relativo = caminhoUrl === '/' ? 'index.html' : decodeURIComponent(caminhoUrl).replace(/^\/+/, '');
+    } catch {
+      // %ZZ e afins: decodeURIComponent lança em vez de devolver texto.
+      resposta.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' }).end('Caminho inválido');
+      return;
+    }
 
-    // Impede escapar da raiz com "../".
-    if (!alvo.startsWith(path.resolve(this.raiz))) {
-      resposta.writeHead(403).end('Acesso negado');
+    // Byte nulo trunca caminhos em algumas camadas do sistema de arquivos.
+    if (relativo.includes('\0')) {
+      resposta.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' }).end('Caminho inválido');
+      return;
+    }
+
+    const raizAbsoluta = path.resolve(this.raiz);
+    const alvo = path.resolve(raizAbsoluta, relativo);
+
+    // Impede escapar da raiz com "../" — a comparação inclui o separador para
+    // que "/app/web/dist-secreto" não passe por prefixo de "/app/web/dist".
+    if (alvo !== raizAbsoluta && !alvo.startsWith(raizAbsoluta + path.sep)) {
+      resposta.writeHead(403, { 'content-type': 'text/plain; charset=utf-8' }).end('Acesso negado');
       return;
     }
 

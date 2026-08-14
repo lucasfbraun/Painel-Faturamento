@@ -9,6 +9,11 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false,
+    // Não embutir arquivos como data: URI. As fontes da Roboto viravam
+    // `url(data:font/woff2;...)`, que a CSP (`font-src 'self'`) bloqueia — e
+    // afrouxar a CSP para permitir `data:` seria pagar em segurança o que se
+    // resolve aqui. Como arquivos separados, ainda ganham cache de longo prazo.
+    assetsInlineLimit: 0,
   },
   server: {
     port: 5173,

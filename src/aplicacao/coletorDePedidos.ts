@@ -116,6 +116,9 @@ export class ColetorDePedidos {
       );
     } catch (erro) {
       const mensagem = erro instanceof Error ? erro.message : String(erro);
+      // O corpo cru da resposta só vai para o log do servidor, nunca para a tela.
+      const detalhe = (erro as { corpo?: string })?.corpo;
+      if (detalhe) this.logger.erro(`resposta do ERP: ${detalhe.slice(0, 500)}`);
       this.snapshotAtual = {
         ...this.snapshotAtual,
         ok: false,

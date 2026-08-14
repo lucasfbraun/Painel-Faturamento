@@ -24,6 +24,7 @@ Isso resolve CORS, certificado autoassinado e exposição do token de uma vez s�
 | **[docs/MANUAL-DO-USUARIO.md](docs/MANUAL-DO-USUARIO.md)** | quem usa a tela | o que cada indicador conta, como ler as cores, filtros, exportação, FAQ |
 | **[docs/OPERACAO.md](docs/OPERACAO.md)** | quem mantém no ar | comandos do dia a dia, como ler os logs, problemas conhecidos e o que fazer |
 | **[IDENTIDADE_VISUAL.md](IDENTIDADE_VISUAL.md)** | quem mexe no visual | paleta, tipografia e regras de uso do logo |
+| **[docs/SEGURANCA.md](docs/SEGURANCA.md)** | TI / segurança | superfície de ataque, o que está protegido, riscos aceitos |
 | **[CHANGELOG.md](CHANGELOG.md)** | todos | o que mudou em cada versão |
 
 ---
@@ -71,6 +72,7 @@ painelFaturamento/
 │   ├── http/
 │   │   ├── servidor.ts           servidor HTTP
 │   │   ├── rotas.ts              tabela de rotas da API
+│   │   ├── seguranca.ts          cabeçalhos, mesma origem, limite de chamadas
 │   │   └── arquivosEstaticos.ts  serve o bundle da tela
 │   └── shared/                   datas (fuso) e logger
 │
@@ -106,7 +108,7 @@ pelo construtor, o que permite testar cada peça com um dublê.
 npm install                  # dependências do back-end (só TypeScript)
 npm run build                # compila back-end e front-end
 npm start                    # sobe o servidor em http://localhost:2000
-npm test                     # 74 testes (runner nativo do Node)
+npm test                     # 91 testes (runner nativo do Node)
 
 npm run dev                  # tsc em watch
 npm run dev:web              # Vite com hot reload em :5173, /api vai para :2000
@@ -245,7 +247,24 @@ painel funcionando numa rede sem saída para a internet.
 
 ---
 
-## 8. Resiliência
+## 8. Segurança
+
+Resumo — o detalhe está em **[docs/SEGURANCA.md](docs/SEGURANCA.md)**:
+
+- o token do ERP nunca sai do servidor; o navegador não fala com `10.1.1.220`
+- CSP restritiva, `nosniff`, `X-Frame-Options: DENY`, sem CORS liberado
+- servidor de estáticos protegido contra travessia de diretório (com testes)
+- `POST /api/atualizar` exige mesma origem e é limitado a 1 chamada / 10 s
+- erros do ERP chegam à tela sem o corpo da resposta (fica só no log)
+- container não-root, sistema de arquivos somente leitura, `cap_drop: ALL`
+- `npm audit` limpo; em produção o back-end roda sem dependências
+
+**Risco aceito:** não há autenticação — quem alcança a porta 2000 vê o painel. Vale
+para rede interna. Antes de expor para fora, leia a seção 3 do documento de segurança.
+
+---
+
+## 9. Resiliência
 
 - Snapshot salvo em `./data/snapshot.json`: após restart a tela abre preenchida.
 - Ciclo que falha não apaga os dados anteriores — a tela mostra o aviso e o horário
@@ -257,7 +276,7 @@ painel funcionando numa rede sem saída para a internet.
 
 ---
 
-## 9. Pontos de atenção
+## 10. Pontos de atenção
 
 - **Build precisa de internet** para baixar React e Vite do npm. Em máquina sem acesso
   ao registry, use o `iniciar-sem-docker.bat` com o `dist/` que já vem pronto no pacote.

@@ -3,19 +3,49 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: painel-faturamento:2.0
+    image: painel-faturamento:3.0
     container_name: painel-faturamento
     restart: unless-stopped
+
     ports:
-      # host:container — os dois números devem bater com PORT do .env
+      # host:container — os dois números devem bater com PORT do .env.
+      # Para restringir o painel à própria máquina, troque por "127.0.0.1:2000:2000".
       - "2000:2000"
+
     env_file:
       - .env
     environment:
       TZ: America/Sao_Paulo
+
     volumes:
-      # Mantém o último snapshot entre reinícios (a tela abre preenchida).
+      # Único ponto de escrita: o cache do último snapshot.
       - ./data:/app/data
+
+    # ------------------------------------------------------------ segurança ---
+    # O processo já roda como usuário 'node' (ver Dockerfile). Aqui fechamos o
+    # resto: sistema de arquivos somente leitura, nenhuma capacidade de kernel e
+    # proibição de escalar privilégio.
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+    # Teto de recursos: um ciclo que cresça demais derruba o container em vez de
+    # comprometer o host.
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
     # Se o ERP (10.1.1.220) não for alcançável pela rede bridge do Docker,
     # descomente a linha abaixo e remova a seção "ports". Atenção: no Docker
     # Desktop para Windows o host networking não publica portas.
