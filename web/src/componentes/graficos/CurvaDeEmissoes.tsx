@@ -8,9 +8,9 @@ interface Props {
   serie: readonly ContagemDiaria[];
 }
 
-const ALTURA = 240;
-const MARGEM = { topo: 16, direita: 16, base: 26, esquerda: 40 } as const;
-const LINHAS_DE_GRADE = 4;
+const ALTURA = 150;
+const MARGEM = { topo: 18, direita: 12, base: 20, esquerda: 34 } as const;
+const LINHAS_DE_GRADE = 2;
 
 interface Ponto {
   dia: string;
@@ -74,7 +74,7 @@ export function CurvaDeEmissoes({ serie }: Props) {
 
   const ativo = indiceAtivo !== null ? pontos[indiceAtivo] : undefined;
   const ultimoPonto = pontos[pontos.length - 1];
-  const intervaloRotulos = Math.ceil(pontos.length / 8);
+  const intervaloRotulos = Math.ceil(pontos.length / 5);
 
   function aoMover(evento: React.MouseEvent<HTMLDivElement>) {
     const caixa = evento.currentTarget.getBoundingClientRect();

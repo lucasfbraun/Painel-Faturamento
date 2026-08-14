@@ -20,9 +20,7 @@ function metricasDePicking(picking: Analitico['picking']): Metrica[] {
     { rotulo: 'Média', valor: formatarDuracao(picking.mediaHoras), destaque: true },
     { rotulo: 'Mediana', valor: formatarDuracao(picking.medianaHoras) },
     { rotulo: 'P90', valor: formatarDuracao(picking.p90Horas) },
-    { rotulo: 'Mais rápido', valor: formatarDuracao(picking.minimoHoras) },
-    { rotulo: 'Mais lento', valor: formatarDuracao(picking.maximoHoras) },
-    { rotulo: 'Amostra', valor: `${picking.amostra} pedidos` },
+    { rotulo: 'Amostra', valor: String(picking.amostra) },
   ];
 }
 
@@ -40,7 +38,7 @@ export function PainelAnalitico({ analitico, diasDaJanela }: Props) {
       <article className="cartao">
         <header className="cartao__cabecalho">
           <h2>Aceite → Picking</h2>
-          <span className="cartao__nota">tempo de separação · janela de {diasDaJanela} dias</span>
+          <span className="cartao__nota">separação · {diasDaJanela} dias</span>
         </header>
 
         {temAmostra ? (
@@ -73,21 +71,17 @@ export function PainelAnalitico({ analitico, diasDaJanela }: Props) {
       <article className="cartao">
         <header className="cartao__cabecalho">
           <h2>Ritmo de emissão</h2>
-          <span className="cartao__nota">pedidos por dia · últimos {porDia.length} dias</span>
+          <span className="cartao__nota">por dia · {porDia.length} dias</span>
         </header>
         <SerieDiaria serie={porDia} />
       </article>
 
-      <article className="cartao analitico__largo">
+      <article className="cartao">
         <header className="cartao__cabecalho">
           <h2>Curva de emissões</h2>
-          <span className="cartao__nota">acumulado · últimos {porDia.length} dias</span>
+          <span className="cartao__nota">acumulado · {porDia.length} dias</span>
         </header>
         <CurvaDeEmissoes serie={porDia} />
-        <p className="cartao__rodape">
-          A linha acumula os pedidos emitidos desde o início do período — a inclinação é
-          que informa: trecho íngreme, mais pedidos por dia; trecho plano, operação parada.
-        </p>
       </article>
     </section>
   );

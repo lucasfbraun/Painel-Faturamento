@@ -43,10 +43,10 @@ export function SerieDiaria({ serie }: Props) {
 
   return (
     <div className="grafico" onMouseLeave={() => definirDica(null)}>
-      <div className="grafico__area" style={{ height: 232 }}>
+      <div className="grafico__area" style={{ height: 116 }}>
         {/* Grade recessiva: dá escala sem competir com as barras. */}
         <div className="grafico__grade" aria-hidden="true">
-          {[0, 0.5, 1].map((fracao) => (
+          {[0, 1].map((fracao) => (
             <div key={fracao} className="grafico__grade-linha" style={{ top: `${fracao * 100}%` }}>
               <span>{Math.round(maior * (1 - fracao))}</span>
             </div>

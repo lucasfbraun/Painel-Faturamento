@@ -2,6 +2,16 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [3.3.0] — 2026-08-14
+
+### Alterado
+- Seção analítica compactada: os três gráficos passaram para uma única faixa de
+  três colunas e a altura caiu de ~600 px para ~300 px, para a tabela voltar a
+  aparecer na primeira tela.
+- O cartão "Pedidos por situação" virou uma barra fina acima das fichas de
+  filtro, que já funcionam como legenda — rótulo e contagem estavam duplicados.
+- Campo de busca passou a ocupar o espaço restante da linha das fichas.
+
 ## [3.2.0] — 2026-08-14
 
 ### Adicionado

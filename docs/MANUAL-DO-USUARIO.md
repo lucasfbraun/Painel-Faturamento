@@ -68,7 +68,7 @@ Quanto tempo o pedido passa na separação, medido entre o carimbo de **aceite**
 | **Mais rápido / mais lento** | os extremos do período |
 | **Amostra** | quantos pedidos entraram na conta |
 
-O histograma ao lado mostra quantos pedidos caem em cada faixa de tempo. Passe o mouse
+O histograma abaixo mostra quantos pedidos caem em cada faixa de tempo. Passe o mouse
 para ver a quantidade e o percentual.
 
 > **Pedidos sem carimbo ficam fora da conta.** Se um pedido não tem o aceite ou o
@@ -94,10 +94,11 @@ a **inclinação**:
 O número na ponta é o total do período. Passe o mouse em qualquer ponto para ver a data,
 o acumulado até ali e quantos pedidos entraram naquele dia.
 
-### 2.6 Barra "Pedidos por situação"
+### 2.6 Barra de proporção
 
-Distribuição visual dos pedidos que estão na tabela. Passe o mouse sobre uma faixa
-para ver a quantidade e o percentual. A legenda abaixo repete tudo por escrito.
+A faixa fina acima dos filtros mostra a proporção entre as situações dos pedidos que
+estão na tabela. Passe o mouse sobre um trecho para ver o nome, a quantidade e o
+percentual — as fichas de filtro logo abaixo servem de legenda, com as mesmas cores.
 
 ### 2.7 Filtros
 

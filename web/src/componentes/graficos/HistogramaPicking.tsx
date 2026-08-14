@@ -25,7 +25,7 @@ export function HistogramaPicking({ faixas, total }: Props) {
 
   return (
     <div className="grafico" onMouseLeave={() => definirDica(null)}>
-      <div className="grafico__colunas" style={{ height: 176 }}>
+      <div className="grafico__colunas" style={{ height: 104 }}>
         {faixas.map((faixa, indice) => {
           const altura = (faixa.quantidade / maior) * 100;
           const passo = Math.min(indice, PASSOS - 1) + 1;
