@@ -118,7 +118,27 @@ páginas foram percorridas.
 O bundle do front-end não foi gerado. `docker compose up -d --build` refaz tudo;
 fora do Docker, `npm run build:web`.
 
-### 3.9 O build do Docker falha baixando pacotes
+### 3.9 O painel não abre no navegador da TV (tela preta ou em branco)
+
+Navegador de televisor (Tizen, webOS, Android TV) fica anos atrás do Chrome de
+desktop. O bundle é compilado para **Chrome 61+**, mas se o aparelho for mais antigo
+que isso a tela mostra um aviso em vez de ficar preta.
+
+**Primeiro passo, sempre:** abra `http://<servidor>:2000/compat.html` **no próprio
+televisor**. A página é feita em JavaScript antigo (roda em qualquer aparelho) e
+mostra o modelo do navegador e quais recursos faltam. Envie o resultado ao TI.
+
+| O que a página mostra | O que significa |
+|---|---|
+| tudo OK | o navegador dá conta; o problema é outro (rede, cache) |
+| falta **Módulos ES** | aparelho anterior ao Chrome 61 — o painel não roda nele |
+| falta **fetch**, **Promise**, **CSS Grid** ou **Variáveis CSS** | idem |
+| falta só **gap em flexbox**, **ResizeObserver** ou **AbortController** | roda normalmente; há alternativa para os três |
+
+Se tudo estiver OK e mesmo assim não abrir, limpe o cache do navegador da TV: ela
+pode estar servindo o bundle antigo.
+
+### 3.10 O build do Docker falha baixando pacotes
 
 O estágio de build precisa alcançar o registry do npm (React, Vite). Em máquina com
 saída bloqueada, use o `iniciar-sem-docker.bat`, que usa o `dist/` já compilado do

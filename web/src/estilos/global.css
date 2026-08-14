@@ -248,7 +248,9 @@ input {
 .kpi::before {
   content: '';
   position: absolute;
-  inset: 0 0 auto 0;
+  top: 0;
+  right: 0;
+  left: 0;
   height: 3px;
   background: var(--kpi-cor, var(--acao));
 }
@@ -822,7 +824,10 @@ td.numero,
 /* Grade de referência dos gráficos: hairline recessivo, atrás das barras. */
 .grafico__grade {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   pointer-events: none;
 }
 
@@ -893,4 +898,24 @@ td.numero,
 .grafico svg {
   display: block;
   cursor: crosshair;
+}
+
+/* ------------------------------------------------- navegador de TV --- */
+/*
+ * `gap` em flexbox só existe a partir do Chrome 84 e muitos televisores estão
+ * abaixo disso. Sem alternativa, todos os itens dessas barras encostariam uns
+ * nos outros. A regra abaixo só entra em quem não suporta gap.
+ */
+@supports not (gap: 1px) {
+  .filtros > * + *,
+  .barra-topo__acoes > * + *,
+  .distribuicao__barra > * + *,
+  .grafico__colunas > * + * {
+    margin-left: 8px;
+  }
+
+  .kpis > * + *,
+  .analitico > * + * {
+    margin-top: 12px;
+  }
 }

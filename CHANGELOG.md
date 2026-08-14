@@ -2,6 +2,28 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [4.4.0] — 2026-08-14
+
+### Corrigido
+- **O painel voltou a abrir em navegador de TV.** A atualização do Vite 5 → 7 na
+  v4.0 trocou o alvo padrão do bundle para "baseline-widely-available"
+  (Chrome 107+), deixando `?.` e `??` passarem crus para o JavaScript entregue —
+  o que derruba qualquer televisor. O alvo agora é explícito:
+  `es2017 / chrome61 / safari11 / firefox60 / edge18`.
+- `ResizeObserver` (Chrome 64+) ganhou alternativa pelo evento de `resize`; sem
+  ela, os gráficos ficavam com largura zero e não desenhavam.
+- `AbortController` (Chrome 66+) virou opcional — sem ele, segue sem tempo limite
+  em vez de a requisição inteira falhar.
+- Tema escuro não depende mais de `:where()` (Chrome 88+), que fazia o bloco
+  inteiro ser descartado em aparelhos antigos.
+- `inset:` trocado por `top/right/bottom/left`, e `gap` de flexbox ganhou margens
+  de reserva sob `@supports not (gap: 1px)`.
+
+### Adicionado
+- `/compat.html`: página de diagnóstico em JavaScript antigo, que roda em
+  qualquer aparelho e mostra o navegador e quais recursos faltam.
+- Aviso explicativo no lugar da tela preta quando o navegador não tem módulos ES.
+
 ## [4.3.0] — 2026-08-14
 
 ### Removido

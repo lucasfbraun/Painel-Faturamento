@@ -244,8 +244,23 @@ painel funcionando numa rede sem saída para a internet.
 |---|---|
 | `GET /api/dados` | snapshot completo — serve também para Power BI/Grafana |
 | `GET /api/health` | 200 se o último ciclo deu certo, 503 se falhou |
+| `GET /compat.html` | diagnóstico de compatibilidade, para abrir no navegador da TV |
 | `POST /api/atualizar` | dispara um ciclo imediato |
 | qualquer outra | entrega a SPA |
+
+---
+
+## 7.1 Compatibilidade com navegador de TV
+
+O painel roda em televisor corporativo, cujo navegador fica anos atrás do Chrome de
+desktop. Por isso o bundle é compilado para **Chrome 61 / Safari 11** em vez do padrão
+do Vite 7 (Chrome 107+), e as APIs modernas têm alternativa: `ResizeObserver` cai para
+o evento de `resize`, `AbortController` vira ausência de tempo limite, `gap` de flexbox
+tem margens de reserva sob `@supports`, e o tema escuro deixou de depender de `:where()`.
+
+Aparelho anterior ao Chrome 61 não roda o painel — mas mostra uma explicação em vez de
+tela preta. Para descobrir o que falta em um televisor específico, abra
+**`/compat.html`** nele.
 
 ---
 

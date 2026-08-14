@@ -10,17 +10,23 @@ export class ErroApi extends Error {
 }
 
 async function requisitar<T>(caminho: string, init?: RequestInit): Promise<T> {
-  const controlador = new AbortController();
-  const limite = setTimeout(() => controlador.abort(), TEMPO_LIMITE_MS);
+  // AbortController é do Chrome 66; em navegador de TV mais antigo seguimos sem
+  // tempo limite em vez de quebrar a requisição inteira.
+  const controlador = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const limite = controlador ? setTimeout(() => controlador.abort(), TEMPO_LIMITE_MS) : undefined;
   try {
-    const resposta = await fetch(caminho, { ...init, cache: 'no-store', signal: controlador.signal });
+    const resposta = await fetch(caminho, {
+      ...init,
+      cache: 'no-store',
+      ...(controlador ? { signal: controlador.signal } : {}),
+    });
     if (!resposta.ok) throw new ErroApi(`O servidor do painel respondeu ${resposta.status}`, resposta.status);
     return (await resposta.json()) as T;
   } catch (erro) {
     if (erro instanceof ErroApi) throw erro;
     throw new ErroApi('Não foi possível falar com o servidor do painel');
   } finally {
-    clearTimeout(limite);
+    if (limite !== undefined) clearTimeout(limite);
   }
 }
 

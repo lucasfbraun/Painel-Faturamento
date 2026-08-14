@@ -9,5 +9,8 @@
   <body>
     <div id="raiz"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- Navegador sem suporte a módulos ES (anterior ao Chrome 61) mostraria uma
+         tela preta; este arquivo troca isso por uma explicação. -->
+    <script nomodule src="/sem-suporte.js"></script>
   </body>
 </html>

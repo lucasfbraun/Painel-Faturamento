@@ -85,7 +85,9 @@
 /* Mesmos papéis, reancorados no verde-petróleo da marca. */
 
 @media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme='light'])) {
+  /* Sem :where() (Chrome 88+): navegador de TV antigo descartaria o bloco
+     inteiro e o tema escuro simplesmente não existiria. */
+  :root:not([data-theme='light']) {
     color-scheme: dark;
 
     --plano: #071c1a;
