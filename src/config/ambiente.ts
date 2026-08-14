@@ -41,6 +41,13 @@ export interface ConfigIdentificacao {
 
 export interface Config {
   readonly porta: number;
+  /**
+   * Quem pode exibir o painel dentro de um iframe.
+   *   '*'                -> qualquer página (padrão: o painel nasceu para TV corporativa)
+   *   'nao'              -> ninguém
+   *   'http://host:porta' -> apenas as origens listadas (separadas por espaço ou vírgula)
+   */
+  readonly embutirPermitido: string;
   /** Interface de escuta. 127.0.0.1 restringe o painel à própria máquina. */
   readonly endereco: string;
   readonly erp: ConfigErp;
@@ -86,6 +93,7 @@ export function carregarConfig(env: NodeJS.ProcessEnv = process.env): Config {
   return Object.freeze({
     porta: inteiro(env['PORT'], 2000),
     endereco: texto(env['HOST'], '0.0.0.0'),
+    embutirPermitido: texto(env['PERMITIR_EMBUTIR'], '*'),
     erp: Object.freeze({
       baseUrl: texto(env['ERP_BASE_URL'], 'https://10.1.1.220').replace(/\/+$/, ''),
       caminho: texto(env['ERP_PATH'], '/api/comercial/v10/pedidoVenda'),

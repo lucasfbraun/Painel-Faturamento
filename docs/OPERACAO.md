@@ -118,7 +118,27 @@ páginas foram percorridas.
 O bundle do front-end não foi gerado. `docker compose up -d --build` refaz tudo;
 fora do Docker, `npm run build:web`.
 
-### 3.9 O painel não abre no navegador da TV (tela preta ou em branco)
+### 3.9 O software de TV recusa o link / o iframe fica em branco
+
+Softwares de sinalização digital carregam a URL dentro de um **iframe**. Se o painel
+enviar `X-Frame-Options: DENY` ou `frame-ancestors 'none'`, o navegador recusa antes de
+carregar qualquer coisa — o sintoma é o software dizer que o link não é permitido, ou
+uma área em branco.
+
+O padrão desde a v4.5 é liberado. Confirme com:
+
+```powershell
+curl -I http://localhost:2000/ | Select-String "frame"
+```
+
+Esperado: `frame-ancestors *` na CSP e **nenhum** `x-frame-options`. Se aparecer
+`x-frame-options: DENY`, alguém colocou `PERMITIR_EMBUTIR=nao` no `.env` — remova a
+linha ou troque por `*` e `docker compose restart`.
+
+O log da subida também diz em que modo está: *"exibição em iframe liberada (software
+de TV)"*.
+
+### 3.10 O painel não abre no navegador da TV (tela preta ou em branco)
 
 Navegador de televisor (Tizen, webOS, Android TV) fica anos atrás do Chrome de
 desktop. O bundle é compilado para **Chrome 61+**, mas se o aparelho for mais antigo
@@ -142,7 +162,7 @@ mostra o modelo do navegador e quais recursos faltam. Envie o resultado ao TI.
 Se tudo estiver OK e mesmo assim não abrir, limpe o cache do navegador da TV: ela
 pode estar servindo o bundle antigo.
 
-### 3.10 O build do Docker falha baixando pacotes
+### 3.11 O build do Docker falha baixando pacotes
 
 O estágio de build precisa alcançar o registry do npm (React, Vite). Em máquina com
 saída bloqueada, use o `iniciar-sem-docker.bat`, que usa o `dist/` já compilado do
@@ -159,7 +179,7 @@ o `.env` é lido na subida do container, não na imagem.
 ### Mudar regra de negócio
 Tudo no `.env`, sem tocar no código: `SIT_FATURADO`, `SIT_ABERTO`,
 `SIT_DISPONIVEL`, `SIT_OCULTAR_TABELA`, `DIAS_RETROATIVOS`, `POLL_INTERVALO_MIN`,
-`ANO_INTERVALO_MIN`, `DIAS_SERIE`. Depois, `docker compose restart`.
+`ANO_INTERVALO_MIN`, `DIAS_SERIE`, `PERMITIR_EMBUTIR`. Depois, `docker compose restart`.
 
 ### Mudar o título ou a unidade exibida
 `PAINEL_TITULO` e `PAINEL_SUBTITULO` no `.env`, depois `docker compose restart`. Útil

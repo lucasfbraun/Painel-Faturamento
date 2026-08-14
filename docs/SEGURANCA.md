@@ -34,13 +34,25 @@ Toda resposta leva:
 |---|---|
 | `Content-Security-Policy` | scripts, estilos e fontes só do próprio servidor; `frame-ancestors 'none'`, `object-src 'none'`, `form-action 'none'`, `base-uri 'none'` |
 | `X-Content-Type-Options: nosniff` | impede o navegador de "adivinhar" tipo de conteúdo |
-| `X-Frame-Options: DENY` | ninguém embute o painel em um iframe |
 | `Referrer-Policy: no-referrer` | a URL interna não vaza em navegação externa |
 | `Permissions-Policy` | desliga câmera, microfone e geolocalização |
 | `Cross-Origin-Resource-Policy: same-origin` | outro site não consegue carregar os recursos |
 
 **Não há `Access-Control-Allow-Origin`.** Sem esse cabeçalho, um site externo até
 consegue disparar a requisição, mas o navegador impede que ele **leia** a resposta.
+
+### Exibição em iframe — decisão consciente
+`frame-ancestors` é **liberado por padrão** (`PERMITIR_EMBUTIR=*`), porque software de
+TV corporativa carrega o painel dentro de um iframe. Bloquear por padrão deixaria o
+caso de uso principal quebrado — foi o que aconteceu entre a v4.0 e a v4.5.
+
+O risco associado é clickjacking: alguém sobrepor a tela e induzir um clique. Aqui ele
+é irrelevante — o painel não tem ação destrutiva, e a única rota `POST` só antecipa uma
+leitura e ainda exige mesma origem. Quem não usa TV pode fechar com
+`PERMITIR_EMBUTIR=nao`, ou listar as origens permitidas:
+`PERMITIR_EMBUTIR=http://tv.empresa:8080`. Com qualquer permissão, `X-Frame-Options`
+é omitido de propósito: ele não sabe listar origens (o `ALLOW-FROM` foi abandonado) e,
+se enviado, venceria a política mais específica do `frame-ancestors`.
 
 ### Travessia de diretório
 O servidor de estáticos resolve o caminho absoluto e recusa qualquer coisa fora da

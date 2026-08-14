@@ -2,6 +2,20 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [4.5.0] — 2026-08-14
+
+### Corrigido
+- **O software de TV corporativa voltou a aceitar o link.** Esses programas
+  carregam a URL dentro de um iframe, e o `X-Frame-Options: DENY` +
+  `frame-ancestors 'none'` que entraram na v4.0 faziam o navegador recusar antes
+  de carregar. A exibição em iframe agora é liberada por padrão.
+- `Sec-Fetch-Site: same-site` passou a ser aceito em `POST /api/atualizar` — é
+  como o navegador classifica o botão quando a página está dentro do iframe.
+
+### Adicionado
+- `PERMITIR_EMBUTIR` no `.env`: `*` (padrão), `nao` para bloquear, ou lista de
+  origens. O modo em vigor aparece no log da subida.
+
 ## [4.4.1] — 2026-08-14
 
 ### Corrigido

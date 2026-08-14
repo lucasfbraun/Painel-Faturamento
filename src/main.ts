@@ -59,6 +59,7 @@ async function principal(): Promise<void> {
   const servidor = criarServidor(
     { coletor, arquivos: new ServidorDeArquivos(config.caminhoWeb) },
     logger.comContexto('http'),
+    config.embutirPermitido,
   );
   await servidor.ouvir(config.porta, config.endereco);
 
@@ -66,6 +67,11 @@ async function principal(): Promise<void> {
   logger.info(
     `ERP ${config.erp.baseUrl}${config.erp.caminho} | empresa ${config.erp.empresa} | ` +
       `janela ${config.coleta.diasRetroativos} dias | ciclo ${config.coleta.intervaloMin} min`,
+  );
+  logger.info(
+    config.embutirPermitido === '*'
+      ? 'exibição em iframe liberada (software de TV) — ajuste PERMITIR_EMBUTIR para restringir'
+      : `exibição em iframe: ${config.embutirPermitido}`,
   );
   if (!config.erp.token) logger.aviso('ERP_TOKEN está vazio — configure no .env, senão o ERP responde 401');
 

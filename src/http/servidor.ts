@@ -2,7 +2,7 @@ import http from 'node:http';
 import type { Logger } from '../shared/logger.js';
 import type { DependenciasRotas } from './rotas.js';
 import { criarRoteador } from './rotas.js';
-import { aplicarCabecalhosDeSeguranca } from './seguranca.js';
+import { criarAplicadorDeCabecalhos } from './seguranca.js';
 
 export interface ServidorPainel {
   readonly instancia: http.Server;
@@ -10,8 +10,13 @@ export interface ServidorPainel {
   encerrar(): Promise<void>;
 }
 
-export function criarServidor(dependencias: DependenciasRotas, logger: Logger): ServidorPainel {
+export function criarServidor(
+  dependencias: DependenciasRotas,
+  logger: Logger,
+  embutirPermitido = '*',
+): ServidorPainel {
   const roteador = criarRoteador(dependencias);
+  const aplicarCabecalhosDeSeguranca = criarAplicadorDeCabecalhos(embutirPermitido);
 
   const instancia = http.createServer((req, res) => {
     aplicarCabecalhosDeSeguranca(res);

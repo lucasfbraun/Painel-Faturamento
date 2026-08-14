@@ -269,7 +269,9 @@ tela preta. Para descobrir o que falta em um televisor específico, abra
 Resumo — o detalhe está em **[docs/SEGURANCA.md](docs/SEGURANCA.md)**:
 
 - o token do ERP nunca sai do servidor; o navegador não fala com `10.1.1.220`
-- CSP restritiva, `nosniff`, `X-Frame-Options: DENY`, sem CORS liberado
+- CSP restritiva, `nosniff`, sem CORS liberado
+- exibição em iframe liberada por padrão (`PERMITIR_EMBUTIR`), porque o painel roda
+  embutido em software de TV corporativa — fechável com `PERMITIR_EMBUTIR=nao`
 - servidor de estáticos protegido contra travessia de diretório (com testes)
 - `POST /api/atualizar` exige mesma origem e é limitado a 1 chamada / 10 s
 - erros do ERP chegam à tela sem o corpo da resposta (fica só no log)

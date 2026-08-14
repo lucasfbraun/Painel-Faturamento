@@ -7,7 +7,7 @@ import { after, before, describe, it } from 'node:test';
 import type { ColetorDePedidos } from '../src/aplicacao/coletorDePedidos.js';
 import { ErroErp } from '../src/erp/erroErp.js';
 import { ServidorDeArquivos } from '../src/http/arquivosEstaticos.js';
-import { ehMesmaOrigem, LimitadorDeChamadas } from '../src/http/seguranca.js';
+import { ehMesmaOrigem, interpretarPoliticaDeEmbutir, LimitadorDeChamadas } from '../src/http/seguranca.js';
 import { criarServidor, type ServidorPainel } from '../src/http/servidor.js';
 import { loggerMudo } from '../src/shared/logger.js';
 
@@ -51,13 +51,18 @@ after(async () => {
 // ---------------------------------------------------------------- testes ---
 
 describe('cabeçalhos de segurança', () => {
-  it('aplica CSP, nosniff e antienquadramento em toda resposta', async () => {
+  it('aplica CSP, nosniff e política de referenciador em toda resposta', async () => {
     const resposta = await fetch(`${base}/api/dados`);
     assert.match(resposta.headers.get('content-security-policy') ?? '', /default-src 'self'/);
-    assert.match(resposta.headers.get('content-security-policy') ?? '', /frame-ancestors 'none'/);
     assert.equal(resposta.headers.get('x-content-type-options'), 'nosniff');
-    assert.equal(resposta.headers.get('x-frame-options'), 'DENY');
     assert.equal(resposta.headers.get('referrer-policy'), 'no-referrer');
+  });
+
+  it('no padrão, permite exibição em iframe — é assim que o software de TV carrega', async () => {
+    const resposta = await fetch(`${base}/`);
+    assert.match(resposta.headers.get('content-security-policy') ?? '', /frame-ancestors \*/);
+    assert.equal(resposta.headers.get('x-frame-options'), null, 'X-Frame-Options bloquearia o iframe');
+    assert.equal(resposta.headers.get('cross-origin-resource-policy'), 'cross-origin');
   });
 
   it('não expõe cabeçalho de origem cruzada — o painel não é uma API pública', async () => {
@@ -135,6 +140,10 @@ describe('ehMesmaOrigem', () => {
     assert.equal(ehMesmaOrigem(requisicaoFalsa({ 'sec-fetch-site': 'cross-site' })), false);
   });
 
+  it('aceita same-site: é como o navegador classifica o botão dentro do iframe da TV', () => {
+    assert.equal(ehMesmaOrigem(requisicaoFalsa({ 'sec-fetch-site': 'same-site' })), true);
+  });
+
   it('compara o Origin com o Host quando não há Sec-Fetch-Site', () => {
     assert.equal(ehMesmaOrigem(requisicaoFalsa({ origin: 'http://painel:2000', host: 'painel:2000' })), true);
     assert.equal(ehMesmaOrigem(requisicaoFalsa({ origin: 'http://malicioso', host: 'painel:2000' })), false);
@@ -142,6 +151,29 @@ describe('ehMesmaOrigem', () => {
 
   it('aceita clientes sem navegador (curl, Power BI), que não carregam credencial ambiente', () => {
     assert.equal(ehMesmaOrigem(requisicaoFalsa({ host: 'painel:2000' })), true);
+  });
+});
+
+describe('interpretarPoliticaDeEmbutir', () => {
+  it('libera para qualquer página com "*" — o padrão, por causa da TV', () => {
+    const p = interpretarPoliticaDeEmbutir('*');
+    assert.equal(p.frameAncestors, '*');
+    assert.equal(p.bloquearIframe, false);
+    assert.equal(p.recursoCruzado, 'cross-origin');
+  });
+
+  it('bloqueia com "nao" e variantes', () => {
+    for (const valor of ['nao', 'não', 'false', 'no', '']) {
+      const p = interpretarPoliticaDeEmbutir(valor);
+      assert.equal(p.frameAncestors, "'none'", `falhou para "${valor}"`);
+      assert.equal(p.bloquearIframe, true);
+    }
+  });
+
+  it('aceita lista de origens e omite X-Frame-Options, que não sabe listar', () => {
+    const p = interpretarPoliticaDeEmbutir('http://tv.empresa:8080, http://sinal.empresa');
+    assert.equal(p.frameAncestors, "'self' http://tv.empresa:8080 http://sinal.empresa");
+    assert.equal(p.bloquearIframe, false);
   });
 });
 
