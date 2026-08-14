@@ -608,3 +608,272 @@ tbody tr.linha--bloqueada:not(.linha--conferida) {
     font-size: 32px;
   }
 }
+
+/* ========================================================== analítico === */
+
+.analitico {
+  display: grid;
+  grid-template-columns: minmax(340px, 1fr) minmax(340px, 1.15fr);
+  gap: 14px;
+  margin-top: var(--espaco);
+}
+
+@media (max-width: 1000px) {
+  .analitico {
+    grid-template-columns: 1fr;
+  }
+}
+
+.analitico .cartao {
+  margin-top: 0;
+}
+
+.cartao__cabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.cartao__cabecalho h2 {
+  margin-bottom: 0;
+}
+
+.cartao__nota {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--texto-suave);
+  font-family: var(--fonte-dados);
+}
+
+.cartao__rodape {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--borda);
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--texto-suave);
+}
+
+/* -------------------------------------------------------- métricas --- */
+
+.metricas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  gap: 1px;
+  background: var(--borda);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-medio);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.metrica {
+  background: var(--superficie);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.metrica--destaque {
+  background: var(--lavagem-teal);
+}
+
+.metrica__rotulo {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--texto-suave);
+  font-weight: 500;
+}
+
+.metrica__valor {
+  font-family: var(--fonte-dados);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--texto-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.metrica--destaque .metrica__valor {
+  color: var(--acao);
+  font-size: 20px;
+}
+
+/* --------------------------------------------------------- gráficos --- */
+
+.grafico {
+  position: relative;
+}
+
+.grafico__area {
+  position: relative;
+}
+
+.grafico__colunas {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 100%;
+}
+
+.grafico__colunas--densa {
+  gap: 2px;
+}
+
+.grafico__coluna {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  gap: 4px;
+  cursor: crosshair;
+  min-width: 0;
+}
+
+/* Cantos arredondados só no topo: a barra fica ancorada na linha de base. */
+.grafico__barra {
+  border-radius: 4px 4px 2px 2px;
+  background: var(--acao);
+  transition: opacity 0.12s ease;
+  min-height: 2px;
+}
+
+.grafico__coluna:hover .grafico__barra {
+  opacity: 0.75;
+}
+
+/* Fim de semana: contorno em vez de preenchimento. */
+.grafico__barra--vazada {
+  background: transparent;
+  border: 1.5px solid var(--acao);
+  opacity: 0.55;
+}
+
+.grafico__valor {
+  text-align: center;
+  font-family: var(--fonte-dados);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--texto-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.grafico__eixo {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  border-top: 1px solid var(--grade);
+  padding-top: 7px;
+}
+
+.grafico__eixo span {
+  flex: 1;
+  text-align: center;
+  font-size: 10.5px;
+  font-family: var(--fonte-dados);
+  color: var(--texto-suave);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.grafico__eixo--datas {
+  gap: 2px;
+}
+
+/* Linha de referência da média. */
+.grafico__linha-media {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--marca-ambar);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grafico__linha-media span {
+  position: absolute;
+  right: 0;
+  top: -16px;
+  font-size: 10px;
+  font-family: var(--fonte-dados);
+  color: var(--marca-ambar);
+  background: var(--superficie);
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+/* ------------------------------------------------------------- dica --- */
+
+.dica {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  background: var(--marca-petroleo);
+  color: #fff;
+  padding: 7px 11px;
+  border-radius: var(--raio-pequeno);
+  font-size: 11.5px;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: var(--sombra-forte);
+}
+
+.dica b {
+  font-weight: 700;
+}
+
+/* Números de dados em fonte tabular monoespaçada. */
+.kpi__valor,
+td.numero,
+.distribuicao__item b,
+.ficha b {
+  font-family: var(--fonte-dados);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Eixo com rótulos posicionados em percentual (séries densas). */
+.grafico__eixo--posicionado {
+  position: relative;
+  display: block;
+  height: 16px;
+}
+
+.grafico__eixo--posicionado span {
+  position: absolute;
+  transform: translateX(-50%);
+  overflow: visible;
+}
+
+/* Grade de referência dos gráficos: hairline recessivo, atrás das barras. */
+.grafico__grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.grafico__grade-linha {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--grade);
+}
+
+.grafico__grade-linha span {
+  position: absolute;
+  left: -2px;
+  top: -8px;
+  font-size: 9.5px;
+  font-family: var(--fonte-dados);
+  color: var(--texto-suave);
+  background: var(--superficie);
+  padding-right: 4px;
+}

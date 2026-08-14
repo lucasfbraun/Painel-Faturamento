@@ -20,6 +20,8 @@ export interface ConfigColeta {
   readonly intervaloMin: number;
   readonly intervaloAnoMin: number;
   readonly fusoHorario: string;
+  /** Dias exibidos no gráfico de pedidos por dia. */
+  readonly diasDaSerie: number;
 }
 
 export interface ConfigRegras {
@@ -88,6 +90,7 @@ export function carregarConfig(env: NodeJS.ProcessEnv = process.env): Config {
       intervaloMin: Math.max(1, decimal(env['POLL_INTERVALO_MIN'], 5)),
       intervaloAnoMin: Math.max(1, decimal(env['ANO_INTERVALO_MIN'], 5)),
       fusoHorario: texto(env['TZ_PAINEL'], 'America/Sao_Paulo'),
+      diasDaSerie: Math.min(90, Math.max(7, inteiro(env['DIAS_SERIE'], 30))),
     }),
     regras: Object.freeze({
       faturado: listaDeInteiros(env['SIT_FATURADO'], [Situacao.FaturadoTotal]),

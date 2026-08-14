@@ -16,6 +16,18 @@ Isso resolve CORS, certificado autoassinado e exposição do token de uma vez s�
 
 ---
 
+## Documentação
+
+| Documento | Para quem | O que responde |
+|---|---|---|
+| **Este README** | quem instala e desenvolve | como subir, como o código está organizado, quais são as regras |
+| **[docs/MANUAL-DO-USUARIO.md](docs/MANUAL-DO-USUARIO.md)** | quem usa a tela | o que cada indicador conta, como ler as cores, filtros, exportação, FAQ |
+| **[docs/OPERACAO.md](docs/OPERACAO.md)** | quem mantém no ar | comandos do dia a dia, como ler os logs, problemas conhecidos e o que fazer |
+| **[IDENTIDADE_VISUAL.md](IDENTIDADE_VISUAL.md)** | quem mexe no visual | paleta, tipografia e regras de uso do logo |
+| **[CHANGELOG.md](CHANGELOG.md)** | todos | o que mudou em cada versão |
+
+---
+
 ## 1. Subir
 
 ```bash
@@ -44,7 +56,8 @@ painelFaturamento/
 │   │   └── situacoes.ts          rótulos das situações (fonte única)
 │   ├── dominio/                  regras de negócio puras, sem I/O
 │   │   ├── tipos.ts              Pedido, Kpis, Snapshot, Situacao
-│   │   └── kpis.ts               cálculo dos 5 indicadores
+│   │   ├── kpis.ts               cálculo dos indicadores
+│   │   └── tempos.ts             aceite → picking, percentis e série diária
 │   ├── erp/                      tudo que conhece a API do ERP
 │   │   ├── clienteHttp.ts        HTTP + TLS autoassinado + timeout
 │   │   ├── erroErp.ts            erros com dica de causa provável
@@ -69,6 +82,7 @@ painelFaturamento/
 │       ├── hooks/                usePainel (dados), useTema
 │       ├── dominio/              cores por situação, filtro e ordenação
 │       ├── componentes/          Cabecalho, PainelKpis, TabelaPedidos, ...
+│       │   └── graficos/         histograma, série diária e tooltip
 │       ├── utils/                formatadores, exportação CSV
 │       └── estilos/              tokens.css (design tokens) + global.css
 │
@@ -92,7 +106,7 @@ pelo construtor, o que permite testar cada peça com um dublê.
 npm install                  # dependências do back-end (só TypeScript)
 npm run build                # compila back-end e front-end
 npm start                    # sobe o servidor em http://localhost:2000
-npm test                     # 58 testes (runner nativo do Node)
+npm test                     # 72 testes (runner nativo do Node)
 
 npm run dev                  # tsc em watch
 npm run dev:web              # Vite com hot reload em :5173, /api vai para :2000
@@ -135,8 +149,24 @@ um segundo GET a partir de `<ano>-01-01`, com cache próprio (`ANO_INTERVALO_MIN
 | Faturados no dia | `situacao = 6`, `dataEmissao = hoje` | consulta anual |
 | Pedidos em aberto | `situacao ∈ {0,1,2,3,4,5,8}` | janela de 60 dias |
 | Disponíveis p/ faturar | `situacao = 2` (Liberado) | janela de 60 dias |
+| Aceite → Picking | média de `retornoPicking − dataHoraAceite` | janela de 60 dias |
 
 Configurável no `.env` sem tocar no código: `SIT_FATURADO`, `SIT_ABERTO`, `SIT_DISPONIVEL`.
+
+### Tempo de separação (Aceite → Picking)
+
+Os dois carimbos vêm de `dadosCustomizados`: `dataHoraAceite` (o operador aceitou o
+pedido) e `retornoPicking` (a separação voltou concluída). O indicador é a média do
+intervalo entre eles.
+
+Pedidos **sem um dos carimbos ficam fora da amostra**, em vez de contar como zero —
+zero puxaria a média para baixo e esconderia justamente o que não foi medido. O mesmo
+vale para os pedidos com `retornoPicking` anterior ao aceite, que são contados à parte
+como inconsistência do ERP. Os dois números aparecem no rodapé do cartão.
+
+O cartão analítico complementa a média com **mediana, P90, mínimo, máximo e tamanho da
+amostra**, além do histograma por faixa. A média sozinha esconde cauda: com metade dos
+pedidos em 4h e alguns em 5 dias, ela não descreve nem um caso nem outro.
 
 ### O que a tabela mostra
 
@@ -192,6 +222,11 @@ da marca aparecem uma vez só, e os componentes referenciam papéis
 Ele aparece dentro do selo branco arredondado da barra (o texto do logo é escuro e
 sumiria sobre o petróleo). Enquanto o arquivo não existir, a barra usa a assinatura
 em texto — nada quebra.
+
+**Gráficos:** rampa ordinal de uma cor só (teal da marca), do claro ao escuro conforme
+a magnitude cresce — validada nos dois temas: luminosidade monotônica, degraus visíveis
+e extremo claro acima de 2:1 contra a superfície. Números de dados em fonte monoespaçada
+tabular, para as colunas alinharem.
 
 **Fonte:** Roboto (300/400/500/700) empacotada via `@fontsource/roboto`, com fallback
 para Segoe UI. Nada é buscado no Google Fonts em tempo de execução, o que mantém o

@@ -25,17 +25,49 @@ export interface Pedido {
   situacaoNome: string;
   conferido: Conferido;
   dataInclusao: string;
+  dataHoraAceite: string;
+  retornoPicking: string;
   tipoNota: string;
   representante: string;
   qtdItens: number;
 }
 
 export interface Kpis {
+  /** Média de horas entre aceite e retorno do picking; null sem amostra. */
+  tempoPickingHoras: number | null;
   faturadosAno: number;
   faturadosMes: number;
   faturadosDia: number;
   emAberto: number;
   disponiveisFaturar: number;
+}
+
+export interface FaixaDeTempo {
+  rotulo: string;
+  ateHoras: number;
+  quantidade: number;
+}
+
+export interface EstatisticasDeTempo {
+  mediaHoras: number | null;
+  medianaHoras: number | null;
+  p90Horas: number | null;
+  minimoHoras: number | null;
+  maximoHoras: number | null;
+  amostra: number;
+  semMedicao: number;
+  inconsistentes: number;
+  distribuicao: FaixaDeTempo[];
+}
+
+export interface ContagemDiaria {
+  dia: string;
+  quantidade: number;
+}
+
+export interface Analitico {
+  picking: EstatisticasDeTempo;
+  porDia: ContagemDiaria[];
 }
 
 export interface Janela {
@@ -69,6 +101,7 @@ export interface Snapshot {
   kpis: Kpis;
   porSituacao: Record<string, number>;
   pedidos: Pedido[];
+  analitico: Analitico;
   meta: MetaSnapshot;
 }
 

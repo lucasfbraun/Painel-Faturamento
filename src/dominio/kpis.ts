@@ -1,4 +1,5 @@
 import { prefixoDoMes } from '../shared/datas.js';
+import { calcularTemposDePicking } from './tempos.js';
 import type { ContagemPorSituacao, DataReferencia, Kpis, Pedido } from './tipos.js';
 
 export interface RegrasDeSituacao {
@@ -58,6 +59,7 @@ export function calcularKpis(
   regras: RegrasDeSituacao,
 ): Kpis {
   return {
+    tempoPickingHoras: calcularTemposDePicking(pedidosDaJanela).mediaHoras,
     faturadosAno: faturadosNoPeriodo(pedidosDoAno, regras.faturado, String(referencia.ano)),
     faturadosMes: faturadosNoPeriodo(pedidosDoAno, regras.faturado, prefixoDoMes(referencia)),
     faturadosDia: faturadosNoPeriodo(pedidosDoAno, regras.faturado, referencia.iso),

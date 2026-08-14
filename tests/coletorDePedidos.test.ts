@@ -11,6 +11,7 @@ const OPCOES = {
   intervaloMin: 5,
   intervaloAnoMin: 5,
   fusoHorario: 'America/Sao_Paulo',
+  diasDaSerie: 30,
   regras: {
     faturado: [Situacao.FaturadoTotal],
     aberto: [0, 1, 2],

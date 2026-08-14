@@ -32,12 +32,18 @@ export interface Pedido {
   readonly situacaoNome: string;
   readonly conferido: Conferido;
   readonly dataInclusao: string;
+  /** "AAAA-MM-DD HH:mm:ss" — quando o operador aceitou o pedido. */
+  readonly dataHoraAceite: string;
+  /** "AAAA-MM-DD HH:mm:ss" — quando a separação retornou concluída. */
+  readonly retornoPicking: string;
   readonly tipoNota: string;
   readonly representante: string;
   readonly qtdItens: number;
 }
 
 export interface Kpis {
+  /** Média de horas entre o aceite e o retorno do picking; null sem amostra. */
+  readonly tempoPickingHoras: number | null;
   readonly faturadosAno: number;
   readonly faturadosMes: number;
   readonly faturadosDia: number;
@@ -71,6 +77,12 @@ export interface MetaSnapshot {
   readonly paginas: number;
 }
 
+/** Bloco analítico: séries e distribuições que a tela desenha. */
+export interface Analitico {
+  readonly picking: import('./tempos.js').EstatisticasDeTempo;
+  readonly porDia: readonly import('./tempos.js').ContagemDiaria[];
+}
+
 /** Fotografia do estado do painel — é isso que a API devolve para a tela. */
 export interface Snapshot {
   readonly atualizadoEm: string | null;
@@ -81,6 +93,7 @@ export interface Snapshot {
   readonly kpis: Kpis;
   readonly porSituacao: ContagemPorSituacao;
   readonly pedidos: readonly Pedido[];
+  readonly analitico: Analitico;
   readonly meta: MetaSnapshot;
 }
 

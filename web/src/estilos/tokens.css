@@ -62,6 +62,20 @@
   --lavagem-lima: rgba(118, 192, 67, 0.18);
   --conferido-texto: #1d5a1f;
 
+
+  /* ---------- rampa ordinal (magnitude crescente) ----------------------- */
+  /* Uma cor só, do claro ao escuro. Validada: luminosidade monotônica,
+     degraus visíveis e extremo claro acima de 2:1 contra a superfície. */
+  --rampa-1: #7ac4ba;
+  --rampa-2: #57b3a7;
+  --rampa-3: #349d91;
+  --rampa-4: #1a8479;
+  --rampa-5: #116a63;
+  --rampa-6: #0a4a45;
+
+  /* ---------- tipografia de dados --------------------------------------- */
+  --fonte-dados: ui-monospace, 'Cascadia Mono', 'SF Mono', Menlo, Consolas, monospace;
+
   /* ---------- forma e tipografia ---------------------------------------- */
   --raio: 14px;
   --raio-medio: 10px;
@@ -107,6 +121,13 @@
     --lavagem-teal: rgba(31, 162, 148, 0.14);
     --lavagem-lima: rgba(121, 188, 74, 0.22);
     --conferido-texto: #cbe9b4;
+
+    --rampa-1: #1c6f66;
+    --rampa-2: #26897d;
+    --rampa-3: #33a294;
+    --rampa-4: #4dbcae;
+    --rampa-5: #77d0c4;
+    --rampa-6: #a5e2da;
   }
 }
 
@@ -143,4 +164,11 @@
   --lavagem-teal: rgba(31, 162, 148, 0.14);
   --lavagem-lima: rgba(121, 188, 74, 0.22);
   --conferido-texto: #cbe9b4;
+
+  --rampa-1: #1c6f66;
+  --rampa-2: #26897d;
+  --rampa-3: #33a294;
+  --rampa-4: #4dbcae;
+  --rampa-5: #77d0c4;
+  --rampa-6: #a5e2da;
 }

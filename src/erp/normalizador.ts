@@ -59,6 +59,8 @@ export function normalizarPedido(bruto: PedidoBruto): Pedido {
     situacaoNome: rotuloDaSituacao(situacao),
     conferido: interpretarConferido(bruto),
     dataInclusao: lerDadoCustomizado(bruto, 'dataHoraInclusao'),
+    dataHoraAceite: lerDadoCustomizado(bruto, 'dataHoraAceite'),
+    retornoPicking: lerDadoCustomizado(bruto, 'retornoPicking'),
     tipoNota: lerDadoCustomizado(bruto, 'nomeTipoNota'),
     representante: comoTexto(bruto['codRepresentante']),
     qtdItens: contarItens(bruto),

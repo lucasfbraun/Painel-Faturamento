@@ -41,6 +41,7 @@ async function principal(): Promise<void> {
       intervaloMin: config.coleta.intervaloMin,
       intervaloAnoMin: config.coleta.intervaloAnoMin,
       fusoHorario: config.coleta.fusoHorario,
+      diasDaSerie: config.coleta.diasDaSerie,
       regras: config.regras,
     },
     logger.comContexto('coletor'),

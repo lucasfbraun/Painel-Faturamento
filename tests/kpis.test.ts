@@ -23,6 +23,8 @@ function pedido(parcial: Partial<Pedido>): Pedido {
     situacaoNome: 'Digitado',
     conferido: 'Não',
     dataInclusao: '',
+    dataHoraAceite: '',
+    retornoPicking: '',
     tipoNota: 'VENDA',
     representante: '',
     qtdItens: 1,

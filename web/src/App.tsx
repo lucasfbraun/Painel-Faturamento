@@ -3,6 +3,7 @@ import { AvisoErro } from './componentes/AvisoErro';
 import { BarraFiltros } from './componentes/BarraFiltros';
 import { Cabecalho } from './componentes/Cabecalho';
 import { DistribuicaoSituacoes, type FatiaSituacao } from './componentes/DistribuicaoSituacoes';
+import { PainelAnalitico } from './componentes/PainelAnalitico';
 import { PainelKpis } from './componentes/PainelKpis';
 import { TabelaPedidos } from './componentes/TabelaPedidos';
 import { filtrarEOrdenar } from './dominio/filtrarPedidos';
@@ -87,6 +88,7 @@ export function App() {
         ) : snapshot ? (
           <>
             <PainelKpis kpis={snapshot.kpis} meta={snapshot.meta} />
+            <PainelAnalitico analitico={snapshot.analitico} diasDaJanela={snapshot.janela.dias} />
             <DistribuicaoSituacoes fatias={fatias} />
             <BarraFiltros
               fatias={fatias}

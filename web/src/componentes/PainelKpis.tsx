@@ -1,5 +1,6 @@
 import { corDaSituacao } from '../dominio/situacoes';
 import { Situacao, type Kpis, type MetaSnapshot } from '../tipos';
+import { formatarDuracao } from '../utils/duracao';
 import { listarCodigos } from '../utils/formatadores';
 import { CartaoKpi, type DadosKpi } from './CartaoKpi';
 
@@ -24,6 +25,13 @@ function montarCartoes(kpis: Kpis, meta: MetaSnapshot): DadosKpi[] {
       valor: kpis.emAberto,
       dica: `situação ${listarCodigos(meta.sitAberto)}`,
       cor: corDaSituacao(Situacao.Listado),
+    },
+    {
+      rotulo: 'Aceite → Picking',
+      texto: formatarDuracao(kpis.tempoPickingHoras),
+      valor: 0,
+      dica: 'tempo médio de separação',
+      cor: 'var(--marca-ambar)',
     },
     {
       rotulo: 'Disponíveis p/ faturar',

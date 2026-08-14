@@ -1,5 +1,6 @@
 import { ROTULOS_SITUACAO } from '../config/situacoes.js';
 import { agruparPorSituacao, calcularKpis, ocultarSituacoes } from '../dominio/kpis.js';
+import { calcularTemposDePicking, contarPorDia } from '../dominio/tempos.js';
 import type { Pedido, Snapshot } from '../dominio/tipos.js';
 import type { RepositorioPedidosErp } from '../erp/repositorioPedidos.js';
 import { dataDeHoje, inicioDoAno, subtrairDias } from '../shared/datas.js';
@@ -11,6 +12,8 @@ export interface OpcoesColetor {
   readonly intervaloMin: number;
   readonly intervaloAnoMin: number;
   readonly fusoHorario: string;
+  /** Dias exibidos no gráfico de pedidos por dia. */
+  readonly diasDaSerie: number;
   readonly regras: {
     readonly faturado: readonly number[];
     readonly aberto: readonly number[];
@@ -82,6 +85,13 @@ export class ColetorDePedidos {
       const kpis = calcularKpis(pedidos, this.cacheAnual.pedidos, referencia, this.opcoes.regras);
       const pedidosVisiveis = ocultarSituacoes(pedidos, this.opcoes.regras.ocultarNaTabela);
 
+      // O bloco analítico olha a janela inteira: esconder faturados da tabela não
+      // pode distorcer o tempo de picking nem o ritmo de emissão.
+      const analitico = {
+        picking: calcularTemposDePicking(pedidos),
+        porDia: contarPorDia(pedidos, referencia.iso, this.opcoes.diasDaSerie),
+      };
+
       this.snapshotAtual = {
         atualizadoEm: new Date().toISOString(),
         proximaAtualizacao: new Date(Date.now() + this.opcoes.intervaloMin * 60_000).toISOString(),
@@ -91,6 +101,7 @@ export class ColetorDePedidos {
         kpis,
         porSituacao: agruparPorSituacao(pedidosVisiveis),
         pedidos: pedidosVisiveis,
+        analitico,
         meta: {
           ...this.snapshotAtual.meta,
           anoConsultadoEm: this.cacheAnual.carimbo,
@@ -135,9 +146,20 @@ export class ColetorDePedidos {
       ok: false,
       erro: null,
       janela: { inicio: '', fim: '', dias: this.opcoes.diasRetroativos },
-      kpis: { faturadosAno: 0, faturadosMes: 0, faturadosDia: 0, emAberto: 0, disponiveisFaturar: 0 },
+      kpis: {
+        tempoPickingHoras: null,
+        faturadosAno: 0,
+        faturadosMes: 0,
+        faturadosDia: 0,
+        emAberto: 0,
+        disponiveisFaturar: 0,
+      },
       porSituacao: {},
       pedidos: [],
+      analitico: {
+        picking: calcularTemposDePicking([]),
+        porDia: [],
+      },
       meta: {
         empresa: this.opcoes.empresa,
         intervaloMin: this.opcoes.intervaloMin,
