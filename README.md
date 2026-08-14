@@ -108,7 +108,7 @@ pelo construtor, o que permite testar cada peça com um dublê.
 npm install                  # dependências do back-end (só TypeScript)
 npm run build                # compila back-end e front-end
 npm start                    # sobe o servidor em http://localhost:2000
-npm test                     # 91 testes (runner nativo do Node)
+npm test                     # 90 testes (runner nativo do Node)
 
 npm run dev                  # tsc em watch
 npm run dev:web              # Vite com hot reload em :5173, /api vai para :2000

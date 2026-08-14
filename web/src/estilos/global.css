@@ -320,27 +320,6 @@ input {
   opacity: 0.82;
 }
 
-.distribuicao__legenda {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--texto-2);
-}
-
-.distribuicao__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.distribuicao__item b {
-  font-variant-numeric: tabular-nums;
-  color: var(--texto-1);
-  font-weight: 700;
-}
-
 /* ============================================================ filtros === */
 
 .filtros {
@@ -776,10 +755,6 @@ tbody tr.linha--bloqueada:not(.linha--conferida) {
   white-space: nowrap;
 }
 
-.grafico__eixo--datas {
-  gap: 2px;
-}
-
 /* Linha de referência da média. */
 .grafico__linha-media {
   position: absolute;
@@ -826,7 +801,6 @@ tbody tr.linha--bloqueada:not(.linha--conferida) {
 /* Números de dados em fonte tabular monoespaçada. */
 .kpi__valor,
 td.numero,
-.distribuicao__item b,
 .ficha b {
   font-family: var(--fonte-dados);
   font-variant-numeric: tabular-nums;
@@ -871,10 +845,6 @@ td.numero,
 }
 
 /* ------------------------------------------------------ curva (SVG) --- */
-
-.analitico__largo {
-  grid-column: 1 / -1;
-}
 
 .curva__grade {
   stroke: var(--grade);

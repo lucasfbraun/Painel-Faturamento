@@ -170,7 +170,7 @@ curl http://localhost:2000/api/health
 E, no código, antes de subir uma alteração:
 
 ```bash
-npm test        # 91 testes; nenhum pode falhar
+npm test        # 90 testes; nenhum pode falhar
 npm audit       # e, no front-end: npm --prefix web audit
 ```
 

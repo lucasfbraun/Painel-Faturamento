@@ -13,8 +13,6 @@ COPY web/package.json ./web/
 RUN npm --prefix web install --no-audit --no-fund
 
 COPY src ./src
-COPY tools ./tools
-COPY tests ./tests
 COPY web ./web
 
 RUN npm run build:server && npm --prefix web run build

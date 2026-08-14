@@ -1,4 +1,4 @@
-export type NivelLog = 'info' | 'aviso' | 'erro';
+type NivelLog = 'info' | 'aviso' | 'erro';
 
 export interface Logger {
   info(mensagem: string, ...detalhes: unknown[]): void;

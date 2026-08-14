@@ -30,14 +30,11 @@
   --texto-2: #4f6076;
   --texto-suave: var(--marca-suave);
   --acao: var(--marca-teal);
-  --acao-hover: var(--marca-petroleo-medio);
   --grade: #e3eaf1;
   --borda: #dde5ee;
   --sombra: 0 1px 2px rgba(12, 59, 56, 0.06), 0 4px 16px rgba(12, 59, 56, 0.06);
   --sombra-forte: 0 4px 20px rgba(12, 59, 56, 0.14);
 
-  --status-bom: var(--marca-verde);
-  --status-alerta: var(--marca-ambar);
   --status-critico: var(--marca-vermelho);
 
   /* ---------- situações do pedido --------------------------------------- */
@@ -99,7 +96,6 @@
     --texto-2: #b8ccc7;
     --texto-suave: #8aa39d;
     --acao: #1fa294;
-    --acao-hover: #26b8a8;
     --grade: #1d443f;
     --borda: #1d443f;
     --sombra: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
@@ -142,7 +138,6 @@
   --texto-2: #b8ccc7;
   --texto-suave: #8aa39d;
   --acao: #1fa294;
-  --acao-hover: #26b8a8;
   --grade: #1d443f;
   --borda: #1d443f;
   --sombra: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);

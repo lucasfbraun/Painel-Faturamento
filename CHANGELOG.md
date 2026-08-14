@@ -2,6 +2,22 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [4.3.0] — 2026-08-14
+
+### Removido
+- `ehDataIso()` em `shared/datas.ts` — validador que só existia para o próprio
+  teste; nenhuma parte da aplicação o chamava. Removido junto com seus 3 testes.
+- CSS órfão deixado por refatorações da tela: `.analitico__largo` (da época em
+  que a curva ocupava a largura toda), `.distribuicao__legenda` e
+  `.distribuicao__item` (a legenda virou as fichas de filtro) e
+  `.grafico__eixo--datas` (substituído pelo eixo posicionado em percentual).
+- Variáveis de cor declaradas e nunca referenciadas: `--acao-hover`,
+  `--status-alerta` e `--status-bom`.
+- `export` desnecessário em `NivelLog`, que só é usado dentro do próprio módulo.
+- `COPY tests` e `COPY tools` do Dockerfile: nem os testes nem o mock rodam
+  dentro da imagem, então só engordavam o contexto de build.
+- Pasta `web/public`, que ficou vazia depois que o logo saiu da barra.
+
 ## [4.2.0] — 2026-08-14
 
 ### Adicionado

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { dataDeHoje, ehDataIso, inicioDoAno, prefixoDoMes, subtrairDias } from '../src/shared/datas.js';
+import { dataDeHoje, inicioDoAno, prefixoDoMes, subtrairDias } from '../src/shared/datas.js';
 
 describe('dataDeHoje', () => {
   it('resolve a data no fuso de São Paulo, não no UTC do container', () => {
@@ -46,10 +46,3 @@ describe('prefixoDoMes', () => {
   });
 });
 
-describe('ehDataIso', () => {
-  it('aceita apenas AAAA-MM-DD', () => {
-    assert.equal(ehDataIso('2026-08-13'), true);
-    assert.equal(ehDataIso('2026-8-13'), false);
-    assert.equal(ehDataIso(undefined), false);
-  });
-});

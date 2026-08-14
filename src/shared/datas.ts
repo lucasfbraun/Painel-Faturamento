@@ -37,6 +37,3 @@ export function prefixoDoMes(ref: DataReferencia): string {
   return `${ref.ano}-${String(ref.mes).padStart(2, '0')}`;
 }
 
-export function ehDataIso(valor: unknown): valor is string {
-  return typeof valor === 'string' && FORMATO_ISO.test(valor);
-}
