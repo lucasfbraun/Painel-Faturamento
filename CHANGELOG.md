@@ -2,6 +2,16 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [4.1.0] — 2026-08-14
+
+### Alterado
+- **Uma unidade só para tempo em toda a tela: horas.** A formatação anterior
+  trocava de notação conforme a grandeza ("45min", "1h30", "2d 17h"), o que
+  obrigava a converter de cabeça para comparar dois números lado a lado.
+- Termos estatísticos trocados por frases diretas no cartão de separação:
+  "Média" → **Tempo médio**, "Mediana" → **Metade em até**, "P90" → **9 de 10 em
+  até**. As explicações ao passar o mouse trazem o equivalente em dias.
+
 ## [4.0.0] — 2026-08-14
 
 ### Segurança

@@ -1,5 +1,5 @@
 import type { Analitico } from '../tipos';
-import { formatarDuracao } from '../utils/duracao';
+import { emDias, formatarHoras } from '../utils/duracao';
 import { CurvaDeEmissoes } from './graficos/CurvaDeEmissoes';
 import { HistogramaPicking } from './graficos/HistogramaPicking';
 import { SerieDiaria } from './graficos/SerieDiaria';
@@ -17,23 +17,38 @@ interface Metrica {
   destaque?: boolean;
 }
 
+/** Acrescenta o equivalente em dias à explicação, quando ajuda a dimensionar. */
+function comEquivalente(texto: string, horas: number | null): string {
+  const dias = emDias(horas);
+  return dias ? `${texto} Equivale a cerca de ${dias}.` : texto;
+}
+
 function metricasDePicking(picking: Analitico['picking']): Metrica[] {
   return [
     {
-      rotulo: 'Média',
-      valor: formatarDuracao(picking.mediaHoras),
-      ajuda: 'Tempo médio entre o aceite do pedido e o retorno da separação.',
+      rotulo: 'Tempo médio',
+      valor: formatarHoras(picking.mediaHoras),
+      ajuda: comEquivalente(
+        'Tempo médio entre o aceite do pedido e o retorno da separação.',
+        picking.mediaHoras,
+      ),
       destaque: true,
     },
     {
-      rotulo: 'Mediana',
-      valor: formatarDuracao(picking.medianaHoras),
-      ajuda: 'O caso típico: metade dos pedidos ficou abaixo desse tempo. Bem menor que a média significa que alguns pedidos muito lentos estão puxando a média para cima.',
+      rotulo: 'Metade em até',
+      valor: formatarHoras(picking.medianaHoras),
+      ajuda: comEquivalente(
+        'Metade dos pedidos foi separada nesse tempo ou menos — o caso típico. Quando é bem menor que o tempo médio, alguns pedidos muito lentos estão puxando a média para cima.',
+        picking.medianaHoras,
+      ),
     },
     {
-      rotulo: 'P90',
-      valor: formatarDuracao(picking.p90Horas),
-      ajuda: '9 em cada 10 pedidos ficaram abaixo desse tempo — o pior caso normal.',
+      rotulo: '9 de 10 em até',
+      valor: formatarHoras(picking.p90Horas),
+      ajuda: comEquivalente(
+        'Nove em cada dez pedidos foram separados nesse tempo ou menos. É o pior caso normal — o que sobra são as exceções.',
+        picking.p90Horas,
+      ),
     },
     {
       rotulo: 'Pedidos medidos',

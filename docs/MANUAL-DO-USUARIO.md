@@ -78,7 +78,7 @@ para ver a quantidade e o percentual.
 > Exemplo: "Pedidos medidos 122" com "20 pedidos sem o aceite ou o retorno do picking
 > preenchido" significa que a média descreve 122 dos 142 pedidos da janela.
 
-Passar o mouse sobre qualquer uma das quatro métricas mostra a explicação dela.
+Passar o mouse sobre qualquer um dos quatro quadros mostra a explicação dele.
 
 ### 2.4 Ritmo de emissão
 
