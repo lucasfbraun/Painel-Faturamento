@@ -142,6 +142,8 @@ export interface ContagemDiaria {
   /** AAAA-MM-DD */
   readonly dia: string;
   readonly quantidade: number;
+  /** Soma de todos os dias da série até este, inclusive. */
+  readonly acumulado: number;
 }
 
 /**
@@ -158,8 +160,11 @@ export function contarPorDia(pedidos: readonly Pedido[], ateIso: string, dias: n
   const [ano, mes, diaFinal] = ateIso.split('-').map(Number) as [number, number, number];
   const fim = Date.UTC(ano, mes - 1, diaFinal);
 
+  let acumulado = 0;
   return Array.from({ length: dias }, (_, indice) => {
     const dia = new Date(fim - (dias - 1 - indice) * 86_400_000).toISOString().slice(0, 10);
-    return { dia, quantidade: contagem.get(dia) ?? 0 };
+    const quantidade = contagem.get(dia) ?? 0;
+    acumulado += quantidade;
+    return { dia, quantidade, acumulado };
   });
 }

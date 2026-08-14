@@ -131,6 +131,27 @@ describe('contarPorDia', () => {
     assert.deepEqual(serie.map((d) => d.quantidade), [0, 0, 1, 0, 2]);
   });
 
+  it('acumula a contagem dia a dia', () => {
+    const serie = contarPorDia(
+      [
+        pedido({ dataEmissao: '2026-08-11' }),
+        pedido({ dataEmissao: '2026-08-13' }),
+        pedido({ dataEmissao: '2026-08-13' }),
+      ],
+      '2026-08-13',
+      5,
+    );
+    assert.deepEqual(serie.map((d) => d.acumulado), [0, 0, 1, 1, 3]);
+    assert.equal(serie[serie.length - 1]?.acumulado, 3, 'o último ponto é o total do período');
+  });
+
+  it('o acumulado nunca decresce', () => {
+    const serie = contarPorDia([pedido({ dataEmissao: '2026-08-12' })], '2026-08-13', 7);
+    serie.forEach((ponto, i) => {
+      if (i > 0) assert.ok(ponto.acumulado >= serie[i - 1]!.acumulado);
+    });
+  });
+
   it('ignora pedidos fora da janela da série', () => {
     const serie = contarPorDia([pedido({ dataEmissao: '2026-01-01' })], '2026-08-13', 3);
     assert.deepEqual(serie.map((d) => d.quantidade), [0, 0, 0]);

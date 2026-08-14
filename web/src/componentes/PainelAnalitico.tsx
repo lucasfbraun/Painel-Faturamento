@@ -1,5 +1,6 @@
 import type { Analitico } from '../tipos';
 import { formatarDuracao } from '../utils/duracao';
+import { CurvaDeEmissoes } from './graficos/CurvaDeEmissoes';
 import { HistogramaPicking } from './graficos/HistogramaPicking';
 import { SerieDiaria } from './graficos/SerieDiaria';
 
@@ -75,6 +76,18 @@ export function PainelAnalitico({ analitico, diasDaJanela }: Props) {
           <span className="cartao__nota">pedidos por dia · últimos {porDia.length} dias</span>
         </header>
         <SerieDiaria serie={porDia} />
+      </article>
+
+      <article className="cartao analitico__largo">
+        <header className="cartao__cabecalho">
+          <h2>Curva de emissões</h2>
+          <span className="cartao__nota">acumulado · últimos {porDia.length} dias</span>
+        </header>
+        <CurvaDeEmissoes serie={porDia} />
+        <p className="cartao__rodape">
+          A linha acumula os pedidos emitidos desde o início do período — a inclinação é
+          que informa: trecho íngreme, mais pedidos por dia; trecho plano, operação parada.
+        </p>
       </article>
     </section>
   );

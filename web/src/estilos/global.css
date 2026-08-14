@@ -877,3 +877,58 @@ td.numero,
   background: var(--superficie);
   padding-right: 4px;
 }
+
+/* ------------------------------------------------------ curva (SVG) --- */
+
+.analitico__largo {
+  grid-column: 1 / -1;
+}
+
+.curva__grade {
+  stroke: var(--grade);
+  stroke-width: 1;
+}
+
+.curva__rotulo {
+  fill: var(--texto-suave);
+  font-size: 10px;
+  font-family: var(--fonte-dados);
+}
+
+.curva__linha {
+  fill: none;
+  stroke: var(--acao);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.curva__ponta {
+  fill: var(--acao);
+  stroke: var(--superficie);
+  stroke-width: 2;
+}
+
+.curva__total {
+  fill: var(--texto-1);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--fonte-dados);
+}
+
+.curva__mira {
+  stroke: var(--texto-suave);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.curva__marcador {
+  fill: var(--acao);
+  stroke: var(--superficie);
+  stroke-width: 2.5;
+}
+
+.grafico svg {
+  display: block;
+  cursor: crosshair;
+}

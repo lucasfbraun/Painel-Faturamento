@@ -165,7 +165,7 @@ curl http://localhost:2000/api/health
 E, no código, antes de subir uma alteração:
 
 ```bash
-npm test        # 72 testes; nenhum pode falhar
+npm test        # 74 testes; nenhum pode falhar
 ```
 
 ---

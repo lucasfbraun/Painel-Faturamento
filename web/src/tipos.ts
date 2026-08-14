@@ -63,6 +63,8 @@ export interface EstatisticasDeTempo {
 export interface ContagemDiaria {
   dia: string;
   quantidade: number;
+  /** Soma da série até este dia, inclusive — usado pela curva. */
+  acumulado: number;
 }
 
 export interface Analitico {

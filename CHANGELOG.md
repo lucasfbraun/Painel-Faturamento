@@ -2,6 +2,14 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [3.2.0] — 2026-08-14
+
+### Adicionado
+- **Curva de emissões**: gráfico de linha com o acumulado de pedidos emitidos no
+  período, área em degradê, grade de referência, mira vertical com tooltip
+  (dia, acumulado e emissões do dia) e o total rotulado na ponta da linha.
+- `acumulado` em cada ponto da série diária, calculado e testado no domínio.
+
 ## [3.1.0] — 2026-08-14
 
 ### Adicionado

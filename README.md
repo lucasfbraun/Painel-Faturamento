@@ -82,7 +82,7 @@ painelFaturamento/
 │       ├── hooks/                usePainel (dados), useTema
 │       ├── dominio/              cores por situação, filtro e ordenação
 │       ├── componentes/          Cabecalho, PainelKpis, TabelaPedidos, ...
-│       │   └── graficos/         histograma, série diária e tooltip
+│       │   └── graficos/         histograma, série diária, curva acumulada, tooltip
 │       ├── utils/                formatadores, exportação CSV
 │       └── estilos/              tokens.css (design tokens) + global.css
 │
@@ -106,7 +106,7 @@ pelo construtor, o que permite testar cada peça com um dublê.
 npm install                  # dependências do back-end (só TypeScript)
 npm run build                # compila back-end e front-end
 npm start                    # sobe o servidor em http://localhost:2000
-npm test                     # 72 testes (runner nativo do Node)
+npm test                     # 74 testes (runner nativo do Node)
 
 npm run dev                  # tsc em watch
 npm run dev:web              # Vite com hot reload em :5173, /api vai para :2000

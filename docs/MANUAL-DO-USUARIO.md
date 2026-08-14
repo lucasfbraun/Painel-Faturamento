@@ -81,12 +81,25 @@ Pedidos emitidos por dia nos últimos 30 dias. A linha tracejada laranja é a m�
 período. **Barras vazadas são sábados e domingos** — sem essa marcação, a queda natural
 do fim de semana pareceria um problema de operação.
 
-### 2.5 Barra "Pedidos por situação"
+### 2.5 Curva de emissões
+
+A mesma informação do ritmo, vista como **acumulado**: quantos pedidos foram emitidos
+desde o início do período até cada dia. Por acumular, a linha só sobe — o que informa é
+a **inclinação**:
+
+- trecho **íngreme** → muitos pedidos por dia
+- trecho **plano** → poucos pedidos ou operação parada
+- comparar a inclinação do começo com a do fim mostra se o ritmo acelerou ou caiu
+
+O número na ponta é o total do período. Passe o mouse em qualquer ponto para ver a data,
+o acumulado até ali e quantos pedidos entraram naquele dia.
+
+### 2.6 Barra "Pedidos por situação"
 
 Distribuição visual dos pedidos que estão na tabela. Passe o mouse sobre uma faixa
 para ver a quantidade e o percentual. A legenda abaixo repete tudo por escrito.
 
-### 2.6 Filtros
+### 2.7 Filtros
 
 - **Só disponíveis p/ faturar** — atalho para os pedidos Liberados
 - **Fichas de situação** — clique para incluir; clique de novo para tirar. Pode
@@ -96,7 +109,7 @@ para ver a quantidade e o percentual. A legenda abaixo repete tudo por escrito.
 Os filtros valem também para o **Exportar CSV**: o arquivo sai com exatamente as
 linhas que você está vendo.
 
-### 2.7 A tabela
+### 2.8 A tabela
 
 | Coluna | Conteúdo |
 |---|---|
