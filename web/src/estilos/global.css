@@ -387,11 +387,14 @@ input {
 
 /* ============================================================= tabela === */
 
+/* Ferramenta de trabalho da página: sombra mais forte e a mesma fita lima do
+   KPI-herói destacam a tabela entre os cartões mais neutros ao redor. */
 .tabela__moldura {
   background: var(--superficie);
   border: 1px solid var(--borda);
+  border-top: 4px solid var(--marca-lima);
   border-radius: var(--raio);
-  box-shadow: var(--sombra);
+  box-shadow: var(--sombra-forte);
   overflow: auto;
   max-height: 68vh;
 }
@@ -579,8 +582,8 @@ tbody tr.linha--bloqueada:not(.linha--conferida) {
 
 /* ========================================================== analítico === */
 
-/* Três cartões lado a lado: a seção analítica é contexto, não pode empurrar a
-   tabela — que é a ferramenta de trabalho — para fora da primeira tela. */
+/* Três cartões lado a lado: a seção analítica é contexto e vem depois da
+   tabela, então fica compacta em vez de empilhar um cartão por linha. */
 .analitico {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
