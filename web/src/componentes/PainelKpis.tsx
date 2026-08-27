@@ -19,7 +19,7 @@ function montarCartoes(kpis: Kpis, meta: MetaSnapshot): DadosKpi[] {
       cor: corFaturado,
     },
     { rotulo: 'Faturados no mês', valor: kpis.faturadosMes, dica: 'mês corrente', cor: corFaturado },
-    { rotulo: 'Faturados no dia', valor: kpis.faturadosDia, dica: 'hoje', cor: corFaturado },
+    { rotulo: 'Faturados no dia', valor: kpis.faturadosDia, dica: 'previsão de faturamento para hoje', cor: corFaturado },
     {
       rotulo: 'Pedidos em aberto',
       valor: kpis.emAberto,
@@ -36,7 +36,7 @@ function montarCartoes(kpis: Kpis, meta: MetaSnapshot): DadosKpi[] {
     {
       rotulo: 'Disponíveis p/ faturar',
       valor: kpis.disponiveisFaturar,
-      dica: 'situação 2 — Liberado',
+      dica: 'pedidos conferidos e ainda não faturados',
       cor: corDaSituacao(Situacao.Liberado),
       destaque: true,
     },

@@ -44,14 +44,14 @@ A bolinha da pílula **pulsa em verde** quando o último ciclo deu certo e fica
 |---|---|
 | **Faturados no ano** | pedidos com situação *Faturado Total* emitidos no ano corrente |
 | **Faturados no mês** | os mesmos, no mês corrente |
-| **Faturados no dia** | os mesmos, com data de emissão de hoje |
+| **Faturados no dia** | os mesmos, com previsão de faturamento para hoje |
 | **Pedidos em aberto** | tudo que ainda não fechou o ciclo (digitado, listado, liberado, selecionado, faturado parcial e bloqueado) |
 | **Aceite → Picking** | tempo médio entre o aceite do pedido e o retorno da separação |
-| **Disponíveis p/ faturar** | pedidos **Liberados** — o cartão verde em destaque |
+| **Disponíveis p/ faturar** | pedidos **conferidos** e ainda não faturados/cancelados — o cartão verde em destaque |
 
-Os três primeiros olham o **ano inteiro**. Os três últimos olham a **janela de 60
-dias**, que é o horizonte operacional. A letra miúda de cada cartão diz quais
-situações entram na conta.
+Os indicadores de ano e mês olham o **ano inteiro**. O indicador do dia e os
+indicadores operacionais olham a **janela de 60 dias**, atualizada em todo ciclo.
+A letra miúda de cada cartão explica a regra usada.
 
 > **Por que os KPIs contam pedidos que não estão na tabela?** Porque são perguntas
 > diferentes. Os indicadores medem o todo; a tabela mostra só o que ainda exige
@@ -205,9 +205,9 @@ média descreve só uma parte da operação. Compare também a média com a medi
 significa que poucos pedidos muito lentos estão distorcendo a média.
 
 **O número do KPI não bate com o que vejo no ERP.**
-Os KPIs classificam o pedido pela **data de emissão**, não pela data da nota fiscal
-— o endpoint da API não devolve a data efetiva do faturamento. Um pedido emitido
-em março e faturado em abril conta em **março**.
+O endpoint não devolve a data efetiva da nota fiscal. Por isso, o KPI diário usa a
+**previsão de faturamento** (`dataPrevFat`), com fallback para a data de emissão.
+Os totais mensal e anual continuam classificados pela data de emissão.
 
 **Um pedido sumiu da tabela.**
 Provavelmente foi faturado ou cancelado — é o comportamento esperado. Marque a

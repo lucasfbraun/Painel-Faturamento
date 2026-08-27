@@ -22,6 +22,13 @@ export function ocultarSituacoes(pedidos: readonly Pedido[], ocultar: readonly n
   return pedidos.filter((pedido) => pedido.situacao === null || !escondidas.has(pedido.situacao));
 }
 
+function contarConferidosVisiveis(pedidos: readonly Pedido[], ocultar: readonly number[]): number {
+  return ocultarSituacoes(pedidos, ocultar).reduce(
+    (total, pedido) => (pedido.conferido === 'Sim' ? total + 1 : total),
+    0,
+  );
+}
+
 /** Conta quantos pedidos estão em qualquer uma das situações informadas. */
 export function contarPorSituacao(pedidos: readonly Pedido[], situacoes: readonly number[]): number {
   const alvo = new Set(situacoes);
@@ -46,11 +53,19 @@ function faturadosNoPeriodo(pedidos: readonly Pedido[], faturado: readonly numbe
   );
 }
 
+function faturadosNoDia(pedidos: readonly Pedido[], faturado: readonly number[], dia: string): number {
+  const alvo = new Set(faturado);
+  return pedidos.reduce((total, pedido) => {
+    const dataOperacional = pedido.dataPrevFat || pedido.dataEmissao;
+    return pedido.situacao !== null && alvo.has(pedido.situacao) && dataOperacional === dia ? total + 1 : total;
+  }, 0);
+}
+
 /**
  * Calcula os cinco KPIs do painel.
  *
- * Os faturados vêm da consulta anual (a janela de 60 dias não cobre o ano);
- * "em aberto" e "disponíveis para faturar" vêm da janela, que é a visão operacional.
+ * Os faturados de ano/mês vêm da consulta anual. O indicador do dia usa a
+ * janela operacional, atualizada em todo ciclo, para não ficar preso ao cache anual.
  */
 export function calcularKpis(
   pedidosDaJanela: readonly Pedido[],
@@ -62,8 +77,8 @@ export function calcularKpis(
     tempoPickingHoras: calcularTemposDePicking(pedidosDaJanela).mediaHoras,
     faturadosAno: faturadosNoPeriodo(pedidosDoAno, regras.faturado, String(referencia.ano)),
     faturadosMes: faturadosNoPeriodo(pedidosDoAno, regras.faturado, prefixoDoMes(referencia)),
-    faturadosDia: faturadosNoPeriodo(pedidosDoAno, regras.faturado, referencia.iso),
+    faturadosDia: faturadosNoDia(pedidosDaJanela, regras.faturado, referencia.iso),
     emAberto: contarPorSituacao(pedidosDaJanela, regras.aberto),
-    disponiveisFaturar: contarPorSituacao(pedidosDaJanela, regras.disponivel),
+    disponiveisFaturar: contarConferidosVisiveis(pedidosDaJanela, regras.ocultarNaTabela),
   };
 }

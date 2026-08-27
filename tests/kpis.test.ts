@@ -100,16 +100,16 @@ describe('ocultarSituacoes', () => {
 
 describe('calcularKpis', () => {
   const pedidosDoAno = [
-    pedido({ situacao: Situacao.FaturadoTotal, dataEmissao: '2026-08-13' }), // hoje
-    pedido({ situacao: Situacao.FaturadoTotal, dataEmissao: '2026-08-01' }), // mês
-    pedido({ situacao: Situacao.FaturadoTotal, dataEmissao: '2026-03-10' }), // ano
-    pedido({ situacao: Situacao.FaturadoParcial, dataEmissao: '2026-08-13' }), // não conta
-    pedido({ situacao: Situacao.FaturadoTotal, dataEmissao: '2025-12-31' }), // ano anterior
+    pedido({ situacao: Situacao.FaturadoTotal, dataEmissao: '2026-08-13', dataPrevFat: '2026-08-13' }), // hoje
+    pedido({ situacao: Situacao.FaturadoTotal, dataEmissao: '2026-08-01', dataPrevFat: '2026-08-01' }), // mês
+    pedido({ situacao: Situacao.FaturadoTotal, dataEmissao: '2026-03-10', dataPrevFat: '2026-03-10' }), // ano
+    pedido({ situacao: Situacao.FaturadoParcial, dataEmissao: '2026-08-13', dataPrevFat: '2026-08-13' }), // não conta
+    pedido({ situacao: Situacao.FaturadoTotal, dataEmissao: '2025-12-31', dataPrevFat: '2025-12-31' }), // ano anterior
   ];
 
   const pedidosDaJanela = [
-    pedido({ situacao: Situacao.Liberado }),
-    pedido({ situacao: Situacao.Liberado }),
+    pedido({ situacao: Situacao.Liberado, conferido: 'Sim' }),
+    pedido({ situacao: Situacao.Liberado, conferido: 'Sim' }),
     pedido({ situacao: Situacao.Digitado }),
     pedido({ situacao: Situacao.Bloqueado }),
     pedido({ situacao: Situacao.FaturadoTotal }),
@@ -130,25 +130,61 @@ describe('calcularKpis', () => {
     assert.equal(kpis.faturadosDia, 1);
   });
 
+  it('conta no dia um pedido antigo faturado na data prevista de hoje', () => {
+    const faturadoHoje = pedido({
+      situacao: Situacao.FaturadoTotal,
+      dataEmissao: '2026-08-12',
+      dataPrevFat: '2026-08-13',
+    });
+
+    assert.equal(calcularKpis([faturadoHoje], [faturadoHoje], REFERENCIA, REGRAS).faturadosDia, 1);
+  });
+
+  it('usa a consulta fresca da janela para os faturados do dia', () => {
+    const faturadoHoje = pedido({
+      situacao: Situacao.FaturadoTotal,
+      dataEmissao: '2026-08-12',
+      dataPrevFat: '2026-08-13',
+    });
+    const cacheAnualAnterior = pedido({
+      situacao: Situacao.FaturadoTotal,
+      dataEmissao: '2026-08-11',
+      dataPrevFat: '2026-08-12',
+    });
+
+    assert.equal(calcularKpis([faturadoHoje], [cacheAnualAnterior], REFERENCIA, REGRAS).faturadosDia, 1);
+  });
+
   it('não conta faturamento parcial quando a regra pede só o total', () => {
     const soParcial = [pedido({ situacao: Situacao.FaturadoParcial, dataEmissao: '2026-08-13' })];
-    assert.equal(calcularKpis([], soParcial, REFERENCIA, REGRAS).faturadosDia, 0);
+    assert.equal(calcularKpis(soParcial, [], REFERENCIA, REGRAS).faturadosDia, 0);
   });
 
   it('respeita uma regra customizada de faturado', () => {
     const regras = { ...REGRAS, faturado: [Situacao.FaturadoParcial, Situacao.FaturadoTotal] };
-    assert.equal(calcularKpis([], pedidosDoAno, REFERENCIA, regras).faturadosDia, 2);
+    assert.equal(calcularKpis(pedidosDoAno, [], REFERENCIA, regras).faturadosDia, 2);
   });
 
   it('em aberto exclui faturado total e cancelado', () => {
     assert.equal(kpis.emAberto, 4);
   });
 
-  it('disponíveis para faturar conta apenas os liberados', () => {
+  it('disponíveis para faturar conta os pedidos conferidos', () => {
     assert.equal(kpis.disponiveisFaturar, 2);
   });
 
-  it('usa a consulta anual, e não a janela, para os faturados', () => {
+  it('disponíveis para faturar conta os conferidos que ainda estão visíveis', () => {
+    const pedidos = [
+      pedido({ situacao: Situacao.Digitado, conferido: 'Sim' }),
+      pedido({ situacao: Situacao.SelecionadoTotal, conferido: 'Sim' }),
+      pedido({ situacao: Situacao.Liberado, conferido: 'Não' }),
+      pedido({ situacao: Situacao.FaturadoTotal, conferido: 'Sim' }),
+    ];
+
+    assert.equal(calcularKpis(pedidos, [], REFERENCIA, REGRAS).disponiveisFaturar, 2);
+  });
+
+  it('usa a consulta anual, e não a janela, para o total do ano', () => {
     assert.equal(calcularKpis(pedidosDaJanela, [], REFERENCIA, REGRAS).faturadosAno, 0);
   });
 });

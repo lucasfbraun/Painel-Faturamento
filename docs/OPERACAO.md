@@ -224,7 +224,8 @@ npm audit       # e, no front-end: npm --prefix web audit
 
 - A consulta anual carrega o ano inteiro em memória. Com dezenas de milhares de
   pedidos por ano, aumente `ANO_INTERVALO_MIN` e considere guardar só as contagens.
-- Os KPIs usam `dataEmissao` porque o endpoint não devolve a data efetiva da nota.
+- O KPI diário usa `dataPrevFat` (com fallback para `dataEmissao`); os totais mensal
+  e anual usam `dataEmissao`, pois o endpoint não devolve a data efetiva da nota.
 - O painel é somente leitura — não há qualquer escrita no ERP.
 - Não há autenticação na tela: quem alcança a porta 2000 vê o painel. Se precisar
   expor fora da rede interna, coloque um proxy reverso com autenticação na frente.

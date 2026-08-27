@@ -148,12 +148,14 @@ um segundo GET a partir de `<ano>-01-01`, com cache próprio (`ANO_INTERVALO_MIN
 |---|---|---|
 | Faturados no ano | `situacao = 6`, `dataEmissao` no ano corrente | consulta anual |
 | Faturados no mês | `situacao = 6`, `dataEmissao` no mês corrente | consulta anual |
-| Faturados no dia | `situacao = 6`, `dataEmissao = hoje` | consulta anual |
+| Faturados no dia | `situacao = 6`, `dataPrevFat = hoje` (fallback: `dataEmissao`) | janela de 60 dias |
 | Pedidos em aberto | `situacao ∈ {0,1,2,3,4,5,8}` | janela de 60 dias |
-| Disponíveis p/ faturar | `situacao = 2` (Liberado) | janela de 60 dias |
+| Disponíveis p/ faturar | `conferido = Sim`, excluindo faturados e cancelados | janela de 60 dias |
 | Aceite → Picking | média de `retornoPicking − dataHoraAceite` | janela de 60 dias |
 
 Configurável no `.env` sem tocar no código: `SIT_FATURADO`, `SIT_ABERTO`, `SIT_DISPONIVEL`.
+`SIT_DISPONIVEL` continua definindo o filtro de situações liberadas; o KPI operacional
+de disponíveis acompanha os pedidos conferidos que ainda aparecem na tabela.
 A identificação da barra também: `PAINEL_TITULO` e `PAINEL_SUBTITULO` — replicar o
 painel para outra filial é trocar duas linhas do `.env`, sem recompilar.
 
@@ -301,8 +303,8 @@ para rede interna. Antes de expor para fora, leia a seção 3 do documento de se
   ao registry, use o `iniciar-sem-docker.bat` com o `dist/` que já vem pronto no pacote.
 - **`ERP_TLS_INSECURE=true`** ignora a validação do certificado — esperado para um IP
   interno com certificado autoassinado. Havendo certificado válido, mude para `false`.
-- **`dataEmissao` × data da nota:** os KPIs classificam por `dataEmissao` porque o
-  endpoint não devolve a data efetiva de faturamento. Se o ERP expuser esse campo,
-  a troca é em `src/dominio/kpis.ts`.
+- **Data prevista × data da nota:** o KPI diário usa `dataPrevFat` (com fallback para
+  `dataEmissao`) porque o endpoint não devolve a data efetiva da nota. Os totais de
+  mês e ano continuam classificados pela data de emissão.
 - **Volume:** a consulta anual carrega o ano em memória. Com dezenas de milhares de
   pedidos/ano, aumente `ANO_INTERVALO_MIN` e considere guardar só as contagens.

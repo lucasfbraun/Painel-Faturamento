@@ -52,8 +52,8 @@
   --situacao-cancelado: #898781;
 
   /* ---------- realces de linha ------------------------------------------ */
-  --linha-conferida: rgba(76, 175, 80, 0.1);
-  --linha-conferida-hover: rgba(76, 175, 80, 0.16);
+  --linha-conferida: rgba(76, 175, 80, 0.3);
+  --linha-conferida-hover: rgba(76, 175, 80, 0.4);
   --linha-bloqueada: rgba(224, 108, 117, 0.09);
   --lavagem-teal: rgba(15, 124, 112, 0.08);
   --lavagem-lima: rgba(118, 192, 67, 0.18);
@@ -113,8 +113,8 @@
     --situacao-transmitido: #79bc4a;
     --situacao-bloqueado: #de6270;
 
-    --linha-conferida: rgba(76, 175, 80, 0.16);
-    --linha-conferida-hover: rgba(76, 175, 80, 0.24);
+    --linha-conferida: rgba(76, 175, 80, 0.34);
+    --linha-conferida-hover: rgba(76, 175, 80, 0.44);
     --linha-bloqueada: rgba(222, 98, 112, 0.14);
     --lavagem-teal: rgba(31, 162, 148, 0.14);
     --lavagem-lima: rgba(121, 188, 74, 0.22);
@@ -155,8 +155,8 @@
   --situacao-transmitido: #79bc4a;
   --situacao-bloqueado: #de6270;
 
-  --linha-conferida: rgba(76, 175, 80, 0.16);
-  --linha-conferida-hover: rgba(76, 175, 80, 0.24);
+  --linha-conferida: rgba(76, 175, 80, 0.34);
+  --linha-conferida-hover: rgba(76, 175, 80, 0.44);
   --linha-bloqueada: rgba(222, 98, 112, 0.14);
   --lavagem-teal: rgba(31, 162, 148, 0.14);
   --lavagem-lima: rgba(121, 188, 74, 0.22);

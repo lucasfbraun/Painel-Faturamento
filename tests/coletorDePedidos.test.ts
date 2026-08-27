@@ -37,8 +37,18 @@ function repositorioFalso(
   } as unknown as RepositorioPedidosErp & { consultas: { inicio: string; fim: string }[] };
 }
 
-const pedidoLiberado = { situacao: Situacao.Liberado, dataEmissao: '2026-08-10' };
-const pedidoFaturado = { situacao: Situacao.FaturadoTotal, dataEmissao: '2026-08-13' };
+const pedidoLiberado = {
+  situacao: Situacao.Liberado,
+  dataEmissao: '2026-08-10',
+  dataPrevFat: '2026-08-13',
+  conferido: 'Sim',
+};
+const pedidoFaturado = {
+  situacao: Situacao.FaturadoTotal,
+  dataEmissao: '2026-08-12',
+  dataPrevFat: '2026-08-13',
+  conferido: 'Sim',
+};
 
 describe('ColetorDePedidos', () => {
   it('consulta a janela de 60 dias e o ano corrente', async () => {
@@ -50,7 +60,9 @@ describe('ColetorDePedidos', () => {
   });
 
   it('monta o snapshot com KPIs, distribuição e pedidos', async () => {
-    const repo = repositorioFalso((c) => (c.inicio === '2026-01-01' ? [pedidoFaturado] : [pedidoLiberado, pedidoLiberado]));
+    const repo = repositorioFalso((c) =>
+      c.inicio === '2026-01-01' ? [pedidoFaturado] : [pedidoLiberado, pedidoLiberado, pedidoFaturado],
+    );
     const coletor = new ColetorDePedidos(repo, OPCOES, loggerMudo, HOJE);
     await coletor.executarCiclo();
 
@@ -95,10 +107,20 @@ describe('ColetorDePedidos', () => {
 
   it('esconde faturados e cancelados da tabela sem afetar os KPIs', async () => {
     const janela = [
-      { situacao: Situacao.Liberado, dataEmissao: '2026-08-10' },
-      { situacao: Situacao.FaturadoTotal, dataEmissao: '2026-08-13' },
-      { situacao: Situacao.FaturadoParcial, dataEmissao: '2026-08-12' },
-      { situacao: Situacao.Cancelado, dataEmissao: '2026-08-11' },
+      pedidoLiberado,
+      pedidoFaturado,
+      {
+        situacao: Situacao.FaturadoParcial,
+        dataEmissao: '2026-08-12',
+        dataPrevFat: '2026-08-13',
+        conferido: 'Sim',
+      },
+      {
+        situacao: Situacao.Cancelado,
+        dataEmissao: '2026-08-11',
+        dataPrevFat: '2026-08-13',
+        conferido: 'Sim',
+      },
     ];
     const coletor = new ColetorDePedidos(repositorioFalso(() => janela), OPCOES, loggerMudo, HOJE);
     await coletor.executarCiclo();
@@ -110,6 +132,37 @@ describe('ColetorDePedidos', () => {
     assert.equal(kpis.faturadosDia, 1, 'o KPI continua contando o faturado do dia');
     assert.equal(kpis.disponiveisFaturar, 1);
     assert.equal(meta.totalJanela, 4, 'a meta preserva o total antes do corte');
+  });
+
+  it('atualiza os KPIs quando um pedido é conferido e depois faturado', async () => {
+    let situacao = Situacao.Digitado;
+    let conferido: 'Sim' | 'Não' = 'Não';
+    const repo = repositorioFalso((consulta) =>
+      consulta.inicio === '2026-01-01'
+        ? []
+        : [{ situacao, conferido, dataEmissao: '2026-08-12', dataPrevFat: '2026-08-13' }],
+    );
+    const coletor = new ColetorDePedidos(repo, OPCOES, loggerMudo, HOJE);
+
+    await coletor.executarCiclo();
+    assert.deepEqual(
+      [coletor.snapshot.kpis.disponiveisFaturar, coletor.snapshot.kpis.faturadosDia, coletor.snapshot.pedidos.length],
+      [0, 0, 1],
+    );
+
+    conferido = 'Sim';
+    await coletor.executarCiclo();
+    assert.deepEqual(
+      [coletor.snapshot.kpis.disponiveisFaturar, coletor.snapshot.kpis.faturadosDia, coletor.snapshot.pedidos.length],
+      [1, 0, 1],
+    );
+
+    situacao = Situacao.FaturadoTotal;
+    await coletor.executarCiclo();
+    assert.deepEqual(
+      [coletor.snapshot.kpis.disponiveisFaturar, coletor.snapshot.kpis.faturadosDia, coletor.snapshot.pedidos.length],
+      [0, 1, 0],
+    );
   });
 
   it('expõe as regras de negócio na meta para a tela explicar os KPIs', async () => {
