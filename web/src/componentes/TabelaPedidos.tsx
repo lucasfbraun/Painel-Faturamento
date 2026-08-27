@@ -15,7 +15,6 @@ const COLUNAS: { chave: ColunaOrdenavel; titulo: string }[] = [
   { chave: 'dataEmissao', titulo: 'Data emissão' },
   { chave: 'codPedido', titulo: 'Pedido' },
   { chave: 'codCliente', titulo: 'Cliente' },
-  { chave: 'situacao', titulo: 'Situação' },
   { chave: 'conferido', titulo: 'Conferência' },
 ];
 
