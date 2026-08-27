@@ -15,6 +15,7 @@ const COLUNAS: { chave: ColunaOrdenavel; titulo: string }[] = [
   { chave: 'dataEmissao', titulo: 'Data emissão' },
   { chave: 'codPedido', titulo: 'Pedido' },
   { chave: 'codCliente', titulo: 'Cliente' },
+  { chave: 'situacao', titulo: 'Situação' },
   { chave: 'conferido', titulo: 'Conferência' },
 ];
 
@@ -62,9 +63,6 @@ export function TabelaPedidos({ pedidos, ordenacao, aoOrdenarPor }: Props) {
                   {pedido.nomeCliente && (
                     <span className="cliente__nome"> {pedido.nomeCliente.slice(0, LIMITE_NOME_CLIENTE)}</span>
                   )}
-                </td>
-                <td>
-                  <SeloSituacao situacao={pedido.situacao} rotulo={pedido.situacaoNome} />
                 </td>
                 <td>
                   <IndicadorConferido valor={pedido.conferido} />
