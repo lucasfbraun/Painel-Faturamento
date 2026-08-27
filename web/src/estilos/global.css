@@ -403,12 +403,12 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   width: 100%;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 th,
 td {
-  padding: 14px 18px;
+  padding: 16px 20px;
   text-align: left;
   white-space: nowrap;
 }
@@ -424,7 +424,7 @@ th {
   z-index: 1;
   background: var(--superficie-2);
   border-bottom: 1px solid var(--borda);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.07em;
@@ -501,10 +501,10 @@ tbody tr.linha--bloqueada:not(.linha--conferida) {
 .conferido {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 14px 5px 10px;
+  gap: 9px;
+  padding: 6px 16px 6px 12px;
   border-radius: 999px;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 500;
 }
 
@@ -520,12 +520,12 @@ tbody tr.linha--bloqueada:not(.linha--conferida) {
 
 .conferido__icone {
   display: inline-flex;
-  width: 21px;
-  height: 21px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   background: var(--marca-verde);
   color: #fff;

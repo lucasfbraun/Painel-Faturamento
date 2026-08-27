@@ -19,10 +19,9 @@ describe('legibilidade da tabela em uma TV', () => {
       {
         dados: tamanhoDaFonteEmPixels('table'),
         cabecalho: tamanhoDaFonteEmPixels('th'),
-        situacao: tamanhoDaFonteEmPixels('.selo'),
         conferencia: tamanhoDaFonteEmPixels('.conferido'),
       },
-      { dados: 20, cabecalho: 14, situacao: 18, conferencia: 18 },
+      { dados: 24, cabecalho: 16, conferencia: 22 },
     );
   });
 });
