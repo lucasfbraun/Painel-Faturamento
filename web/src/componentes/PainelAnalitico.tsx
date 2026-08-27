@@ -60,8 +60,8 @@ function metricasDePicking(picking: Analitico['picking']): Metrica[] {
 
 /**
  * Seção analítica: o tempo entre o aceite e o retorno do picking, e o ritmo de
- * emissão dos pedidos. Vive abaixo dos KPIs porque responde "como estamos indo",
- * não "o que fazer agora".
+ * emissão dos pedidos. Vive abaixo da tabela de pedidos porque responde "como
+ * estamos indo", não "o que fazer agora" (que é a tabela, logo após os KPIs).
  */
 export function PainelAnalitico({ analitico, diasDaJanela }: Props) {
   const { picking, porDia } = analitico;

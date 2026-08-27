@@ -88,7 +88,6 @@ export function App() {
         ) : snapshot ? (
           <>
             <PainelKpis kpis={snapshot.kpis} meta={snapshot.meta} />
-            <PainelAnalitico analitico={snapshot.analitico} diasDaJanela={snapshot.janela.dias} />
             <DistribuicaoSituacoes fatias={fatias} />
             <BarraFiltros
               fatias={fatias}
@@ -98,6 +97,7 @@ export function App() {
               aoBuscar={buscar}
             />
             <TabelaPedidos pedidos={pedidosVisiveis} ordenacao={ordenacao} aoOrdenarPor={ordenarPor} />
+            <PainelAnalitico analitico={snapshot.analitico} diasDaJanela={snapshot.janela.dias} />
           </>
         ) : null}
       </main>
