@@ -192,6 +192,11 @@ ficaria sempre zerado. O cabeçalho mostra quantos pedidos foram escondidos.
 
 Colunas: data de emissão · pedido · cliente · situação · conferência.
 
+A ordem da tabela começa pela prioridade operacional: pedidos conferidos aparecem
+antes dos não conferidos e, dentro de cada grupo, os mais antigos aparecem primeiro.
+Ao clicar nos cabeçalhos, a ordenação escolhida atua como critério de desempate
+sem tirar essa prioridade do topo.
+
 A linha carrega duas informações em **dois canais separados**, para não disputarem
 a mesma pista visual:
 

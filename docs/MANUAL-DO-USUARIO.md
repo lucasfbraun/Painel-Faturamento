@@ -126,8 +126,9 @@ linhas que você está vendo.
 | Situação | selo colorido com o nome da situação |
 | Conferência | *Conferido* ✓ ou *Não conferido* ○ |
 
-Clique em qualquer cabeçalho para ordenar; clique de novo para inverter. A tabela
-já abre pela data de emissão, da mais recente para a mais antiga.
+Pedidos conferidos aparecem primeiro. Dentro dos conferidos e dos não conferidos,
+a tabela mostra primeiro os pedidos mais antigos. Clique em qualquer cabeçalho para
+ordenar os empates; clique de novo para inverter esse critério complementar.
 
 ---
 

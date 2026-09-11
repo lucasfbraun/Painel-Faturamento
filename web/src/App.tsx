@@ -14,7 +14,7 @@ import { baixarCsv } from './utils/csv';
 import { formatarHora } from './utils/formatadores';
 
 const FILTROS_INICIAIS: Filtros = { situacoes: new Set<number>(), somenteDisponiveis: false, busca: '' };
-const ORDENACAO_INICIAL: Ordenacao = { coluna: 'dataEmissao', direcao: -1 };
+const ORDENACAO_INICIAL: Ordenacao = { coluna: 'dataEmissao', direcao: 1 };
 
 /** Converte a contagem por situação nas fatias usadas pela barra e pelos filtros. */
 function montarFatias(snapshot: Snapshot | null): FatiaSituacao[] {
